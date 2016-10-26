@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+      function appendResults(text) {
+        var results = document.getElementById('results');
+        results.appendChild(document.createElement('P'));
+        results.appendChild(document.createTextNode(text));
+      }
+
+      function init() {
+        gapi.client.setApiKey('4iwSU_hrcCalsSfAZqrta3tP');
+        var request = gapi.client.request({"path":"/calendars/miamioh.edu_8lcvil6egdbsbjrggjuvrgsft4@group.calendar.google.com", "method":"GET"}); 
+        request.then(function(response) {
+          appendResults(response.result);
+        }, function(reason) {
+        });
+
+     }
+
+
+      gapi.load('client', init);
+    </script>
+  </head>
+  <body>
+    <div id="results"></div>
+  </body>
+</html>
