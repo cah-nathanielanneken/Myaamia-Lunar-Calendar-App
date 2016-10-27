@@ -9,11 +9,13 @@
       }
 
       function init() {
-        gapi.client.setApiKey('4iwSU_hrcCalsSfAZqrta3tP');
-        var request = gapi.client.request({"path":"/calendars/miamioh.edu_8lcvil6egdbsbjrggjuvrgsft4@group.calendar.google.com", "method":"GET"}); 
+        gapi.client.setApiKey('AIzaSyBgO3m5gD5bahtn4LlULE9VnL3q6sKk7Kg');
+        var request = gapi.client.request({"path":"https://www.googleapis.com/calendar/v3/calendars/miamioh.edu_8lcvil6egdbsbjrggjuvrgsft4%40group.calendar.google.com/events", "method":"GET"}); 
+        //var request = gapi.client.request({"path":"calendars"});
         request.then(function(response) {
-          appendResults(response.result);
+          appendResults(JSON.stringify(response.result.items));
         }, function(reason) {
+          console.log(reason);
         });
 
      }
