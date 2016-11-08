@@ -1,13 +1,13 @@
 <?php
   class LunarDay {
     public $myaamiaName;
-    public $gregorianNumber;
     public $englishName;
+    public $gregorianDate;
 
     function __construct($curDate) {
       $this->myaamiaName = $this->convert_day($curDate);
       $d = date_parse_from_format('Y-m-d', $curDate);
-      $this->gregorianNumber = $d['day'];
+      $this->gregorianDate = $curDate;
       $this->englishName = date('l', strtotime($curDate));
     }
 

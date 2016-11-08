@@ -2,23 +2,35 @@
   include('LunarDay.php');
   class LunarMonth {
     public $myaamiaName;
-    public $gregorianNumber;
     public $daysInMonth;
     public $englishName;
     public $numOfDaysInMonth;
 
     function __construct($curDate) {
-      $d = date_parse_from_format('Y-m-d', $curDate);
-      if (($d['year'] - 2015) % 3 == 0) {
-        echo 'Lost moon lear';
-      }
-      $dayDiff = strtotime($curDate) - strtotime('2016-02-09');
-      $dayOfLunarYear = floor($dayDiff / (60 * 60 * 24)) % 354;
+      $dayDiff = floor((strtotime($curDate) - strtotime('2016-02-09'))/(60*60*24));
+      $dayOfLunarYear = $this->get_day_of_lunar_year($dayDiff);
       $this->myaamiaName = $this->lunar_month($dayOfLunarYear);
       $this->englishName = $this->english_lunar_month($dayOfLunarYear);
       $this->numOfDaysInMonth = $this->day_count($dayOfLunarYear);
       $this->daysInMonth = $this->create_days_for_month($dayOfLunarYear,$curDate);
-      $this->gregorianNumber = $d['month'];
+    }
+  
+    public function get_day_of_lunar_year($dayDiff) {
+      $count = 1;
+      $dayOfYear = $dayDiff;
+      for (; $dayOfYear > 354; $dayOfYear = $dayOfYear - 354) {
+        if ($count % 3 == 0) {
+          if ($dayOfYear <= 383) {
+            break;
+          }
+          $dayOfYear = $dayOfYear - 29;
+        }
+        $count++;
+      }
+      if ($count % 3 == 0) {
+        $dayOfYear = $dayOfYear - 29;
+      }
+      return $dayOfYear;
     }
 
     public function create_days_for_month($dayOfLunarYear,$curDate) {
@@ -35,7 +47,9 @@
     }
 
     public function day_count($dayOfLunarYear) {
-      if ($dayOfLunarYear <= 30) {
+      if ($dayOfLunarYear <= 0) {
+        return 29;
+      } else if ($dayOfLunarYear <= 30) {
         return 30;
       } else if ($dayOfLunarYear <= 59) {
         return 29;
@@ -63,7 +77,9 @@
     }
 
     public function lunar_day_of_month($dayOfLunarYear) {
-      if ($dayOfLunarYear <= 30) {
+      if ($dayOfLunarYear <= 0) {
+        return 29 + $dayOfLunarYear;
+      } elseif ($dayOfLunarYear <= 30) {
         return $dayOfLunarYear;
       } else if ($dayOfLunarYear <= 59) {
         return $dayOfLunarYear - 30;
@@ -91,7 +107,9 @@
     }
 
    public function english_lunar_month($dayOfLunarYear) {
-      if ($dayOfLunarYear <= 30) {
+      if ($dayOfLunarYear <= 0) {
+        return 'Lost Moon';
+      } else if ($dayOfLunarYear <= 30) {
         return 'Young Bear Moon';
       } else if ($dayOfLunarYear <= 59) {
         return 'Crow Moon';
@@ -119,7 +137,9 @@
     }
 
     public function lunar_month($dayOfLunarYear) {
-      if ($dayOfLunarYear <= 30) {
+      if ($dayOfLunarYear <= 0) {
+        return 'waawiita kiilhswa';
+      } else if ($dayOfLunarYear <= 30) {
         return 'mahkoonsa kiilhswa';
       } else if ($dayOfLunarYear <= 59) {
         return 'aanteekwa kiilhswa';
