@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Myaamia Calender</title>
+    <script src="js/jquery.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="CalendarCSS.css">
+    <script src="js/bootstrap.js"></script>
+
+</head>
+<body>
+<!--Bootstrap Navbar-->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid ">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <!--Probably should contain logo instead of text-->
+                    <a class="navbar-brand" href="index.html">Myaamia Calendar</a>
+                </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right">
+                    <li>
+                        <a href="#"><img src="res/images/search_white.png" class="icon-top"> Search</a>
+                    </li>
+                    <li>
+                        <a href="#"><img src="res/images/browse_white.png" class="icon-top"> Browse</a>
+                    </li>
+                    <li>
+                        <a href="#"><img src="res/images/feedback_white.png" class="icon-top"> Feedback</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+<!--Ribbon artwork-->
+    <div class="nav-ribbon"></div>
+    <div class="side-ribbon"></div>
+
+    <br><br><br><br><br>
+
+    <div class="mobile-ribbon"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-2 col-sm-offset-2 col-md-6 col-sm-6">
+                <h1>Welcome To The Myaamia Calendar!</h1>
+                <h2 class="myaamia-yellow">Sub Heading (if needed)</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-2 col-sm-offset-2 col-md-10 col-sm-10 parchment">
+                <table id="calendar" align="center">
+		<tr><td colspan="7"><h2>ayaapeensa kiilhswa</h2><div><h3>Young Buck Moon</h3></div></td></tr>
+		<tr> <!-- Day Names -->
+			<td>eelaamini-kii&#353;ikahki</td>
+			<td>nkotakone</td>
+			<td>niis&#353;akone</td>
+			<td>nihsokone</td>
+			<td>niiyakone</td>
+			<td>yaalanokone</td>
+			<td>kaakaathsokone</td>
+		</tr>
+		<tr> <!-- Start of month (week 1) -->
+			<td><div class="miami-label"></div><div class="gregDate"></div></td>
+			<td><div class="miami-label"></div><div class="gregDate"></div></td>
+			<td><div class="miami-label"></div><div class="gregDate"></div></td>
+			<td><div class="miami-label">1</div><div class="gregDate">11/2</div></td>
+			<td><div class="miami-label">2</div><div class="holiday">Arrival In Kansas</div><div class="gregDate">11/3</div></td>
+			<td><div class="miami-label">3</div><div class="gregDate">11/4</div></td>
+			<td><div class="miami-label">4</div><div class="gregDate">11/5</div></td>
+		</tr>
+		<tr> <!-- week 2 -->
+			<td><div class="miami-label">5</div><div class="gregDate">11/6</div></td>
+			<td><div class="miami-label">6</div><div class="moon-word"><!--napale--></div><div class="moon-pic"><img src="napale.png"></div><div class="gregDate">11/7</div></td>
+			<td><div class="miami-label">7</div><div class="gregDate">11/8</div></td>
+			<td><div class="miami-label">8</div><div class="gregDate">11/9</div></td>
+			<td><div class="miami-label">9</div><div class="gregDate">11/10</div></td>
+			<td><div class="miami-label">10</div><div class="gregDate">11/11</div></td>
+			<td><div class="miami-label">11</div><div class="gregDate">11/12</div></td>
+		</tr>
+		<tr> <!-- week 3 -->
+			<td><div class="miami-label">12</div><div class="moon-word"><!--waawiyiisita--></div><div class="moon-pic"><img src="waawiyiisita.png"><div class="gregDate">11/13</div></div></td>
+			<td><div class="miami-label">13</div><div class="gregDate">11/14</div></td>
+			<td><div class="miami-label">14</div><div class="gregDate">11/15</div></td>
+			<td><div class="miami-label">15</div><div class="gregDate">11/16</div></td>
+			<td><div class="miami-label">16</div><div class="gregDate">11/17</div></td>
+			<td><div class="miami-label">17</div><div class="gregDate">11/18</div></td>
+			<td><div class="miami-label">18</div><div class="gregDate">11/19</div></td>
+		</tr>
+		<tr> <!-- week 4 -->
+			<td><div class="miami-label">19</div><div class="gregDate">11/20</div></td>
+			<td><div class="miami-label">20</div><div class="moon-word"><!--napale neepiki--></div><div class="moon-pic"><img src="napale-neepiki.png"></div><div class="gregDate">11/21</div></td>
+			<td><div class="miami-label">21</div><div class="gregDate">11/22</div></td>
+			<td><div class="miami-label">22</div><div class="gregDate">11/23</div></td>
+			<td><div class="miami-label">23</div><div class="gregDate">11/24</div></td>
+			<td><div class="miami-label">24</div><div class="gregDate">11/25</div></td>
+			<td><div class="miami-label">25</div><div class="gregDate">11/26</div></td>
+		</tr>
+		<tr> <!-- week 5 -->
+			<td><div class="miami-label">26</div><div class="gregDate">11/27</div></td>
+			<td><div class="miami-label">27</div><div class="gregDate">11/28</div></td>
+			<td><div class="miami-label">28</div><div class="gregDate">11/29</div></td>
+			<td><div class="miami-label">29</div><div class="gregDate">11/30</div></td>
+			<td><div class="miami-label"></div><div class="gregDate"></div></td>
+			<td><div class="miami-label"></div><div class="gregDate"></div></td>
+			<td><div class="miami-label"></div><div class="gregDate"></div></td>
+		</tr>
+	</table>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+</body>
+</html>
