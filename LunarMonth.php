@@ -9,9 +9,7 @@
     function __construct($curDate) {
       $dayDiff = floor((strtotime($curDate) - strtotime('2016-02-09'))/(60*60*24));
       $dayOfLunarYear = $this->get_day_of_lunar_year($dayDiff);
-      $this->myaamiaName = $this->lunar_month($dayOfLunarYear);
-      $this->englishName = $this->english_lunar_month($dayOfLunarYear);
-      $this->numOfDaysInMonth = $this->day_count($dayOfLunarYear);
+      $this->set_month_info($dayOfLunarYear);
       $this->daysInMonth = $this->create_days_for_month($dayOfLunarYear,$curDate);
     }
   
@@ -46,33 +44,59 @@
       return $days;
     }
 
-    public function day_count($dayOfLunarYear) {
+    public function set_month_info($dayOfLunarYear) {
       if ($dayOfLunarYear <= 0) {
-        return 29;
+        $this->numOfDaysInMonth = 29;
+        $this->englishName = 'Lost Moon';
+        $this->myaamiaName = 'waawiita kiilhswa';
       } else if ($dayOfLunarYear <= 30) {
-        return 30;
+        $this->numOfDaysInMonth = 30;
+        $this->englishName = 'Young Bear Moon';
+        $this->myaamiaName = 'mahkoonsa kiilhswa';
       } else if ($dayOfLunarYear <= 59) {
-        return 29;
+        $this->numOfDaysInMonth = 29;
+        $this->englishName = 'Crow Moon';
+        $this->myaamiaName = 'aanteekwa kiilhswa';
       } else if ($dayOfLunarYear <= 89) {
-        return 30;
+        $this->numOfDaysInMonth = 30;
+        $this->englishName = 'Sandhill Crane Moon';
+        $this->myaamiaName = 'cecaahkwa kiilhswa';
       } else if ($dayOfLunarYear <= 118) {
-        return 29;
+        $this->numOfDaysInMonth = 29;
+        $this->englishName = 'Whippoorwill Moon';
+        $this->myaamiaName = 'wiihkoowia kiilhswa';
       } else if ($dayOfLunarYear <= 148) {
-        return 30;
-      } else if ($dayOfLunarYear <= 177) {
-        return 29;
+        $this->numOfDaysInMonth = 30;
+        $this->englishName = 'Mid-Summer Moon';
+        $this->myaamiaName = 'paaphsaahka niipinwiki';
+      } else if ($dayOfLunarYear <= 177) { 
+        $this->numOfDaysInMonth = 29;
+        $this->englishName = 'Green Corn Moon';
+        $this->myaamiaName = 'kiišiinkwia kiilhswa';
       } else if ($dayOfLunarYear <= 207) {
-        return 30;
+        $this->numOfDaysInMonth = 30;
+        $this->englishName = 'Elk Moon';
+        $this->myaamiaName = 'mihšiiwia kiilhswa';
       } else if ($dayOfLunarYear <= 236) {
-        return 29;
+        $this->numOfDaysInMonth = 29;
+        $this->englishName = 'Grass Burning Moon';
+        $this->myaamiaName = 'šaašaakayolia kiilhswa';
       } else if ($dayOfLunarYear <= 266) {
-        return 30;
+        $this->numOfDaysInMonth = 30;
+        $this->englishName = 'Smokey Burning Moon';
+        $this->myaamiaName = 'kiiyolia kiilhswa';
       } else if ($dayOfLunarYear <= 295) {
-        return 29;
+        $this->numOfDaysInMonth = 29;
+        $this->englishName = 'Young Buck Moon';
+        $this->myaamiaName = 'ayaapeensa kiilhswa';
       } else if ($dayOfLunarYear <= 325) {
-        return 30;
+        $this->numOfDaysInMonth = 30;
+        $this->englishName = 'Buck Moon';
+        $this->myaamiaName = 'ayaapia kiilhswa';
       } else if ($dayOfLunarYear <= 354) {
-        return 29;
+        $this->numOfDaysInMonth = 29;
+        $this->englishName = 'Bear Moon';
+        $this->myaamiaName = 'mahkwa kiilhswa';
       }
     }
 
@@ -103,66 +127,6 @@
         return $dayOfLunarYear - 295;
       } else if ($dayOfLunarYear <= 354) {
         return $dayOfLunarYear - 325;
-      }
-    }
-
-   public function english_lunar_month($dayOfLunarYear) {
-      if ($dayOfLunarYear <= 0) {
-        return 'Lost Moon';
-      } else if ($dayOfLunarYear <= 30) {
-        return 'Young Bear Moon';
-      } else if ($dayOfLunarYear <= 59) {
-        return 'Crow Moon';
-      } else if ($dayOfLunarYear <= 89) {
-        return 'Sandhill Crane Moon';
-      } else if ($dayOfLunarYear <= 118) {
-        return 'Whippoorwill Moon';
-      } else if ($dayOfLunarYear <= 148) {
-        return 'Mid-Summer Moon';
-      } else if ($dayOfLunarYear <= 177) {
-        return 'Green Corn Moon';
-      } else if ($dayOfLunarYear <= 207) {
-        return 'Elk Moon';
-      } else if ($dayOfLunarYear <= 236) {
-        return 'Grass Burning Moon';
-      } else if ($dayOfLunarYear <= 266) {
-        return 'Smokey Burning Moon';
-      } else if ($dayOfLunarYear <= 295) {
-        return 'Young Buck Moon';
-      } else if ($dayOfLunarYear <= 325) {
-        return 'Buck Moon';
-      } else if ($dayOfLunarYear <= 354) {
-        return 'Bear Moon';
-      }
-    }
-
-    public function lunar_month($dayOfLunarYear) {
-      if ($dayOfLunarYear <= 0) {
-        return 'waawiita kiilhswa';
-      } else if ($dayOfLunarYear <= 30) {
-        return 'mahkoonsa kiilhswa';
-      } else if ($dayOfLunarYear <= 59) {
-        return 'aanteekwa kiilhswa';
-      } else if ($dayOfLunarYear <= 89) {
-        return 'cecaahkwa kiilhswa';
-      } else if ($dayOfLunarYear <= 118) {
-        return 'wiihkoowia kiilhswa';
-      } else if ($dayOfLunarYear <= 148) {
-        return 'paaphsaahka niipinwiki';
-      } else if ($dayOfLunarYear <= 177) {
-        return 'kiišiinkwia kiilhswa';
-      } else if ($dayOfLunarYear <= 207) {
-        return 'mihšiiwia kiilhswa';
-      } else if ($dayOfLunarYear <= 236) {
-        return 'šaašaakayolia kiilhswa';
-      } else if ($dayOfLunarYear <= 266) {
-        return 'kiiyolia kiilhswa';
-      } else if ($dayOfLunarYear <= 295) {
-        return 'ayaapeensa kiilhswa';
-      } else if ($dayOfLunarYear <= 325) {
-        return 'ayaapia kiilhswa';
-      } else if ($dayOfLunarYear <= 354) {
-        return 'mahkwa kiilhswa';
       }
     }
   }
