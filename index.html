@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+      function appendResults(text) {
+        var results = document.getElementById('results');
+        results.appendChild(document.createElement('P'));
+        results.appendChild(document.createTextNode(text));
+      }
+
+      function init() {
+        gapi.client.setApiKey('AIzaSyBgO3m5gD5bahtn4LlULE9VnL3q6sKk7Kg');
+        var request = gapi.client.request({"path":"https://www.googleapis.com/calendar/v3/calendars/miamioh.edu_8lcvil6egdbsbjrggjuvrgsft4%40group.calendar.google.com/events", "method":"GET"}); 
+        //var request = gapi.client.request({"path":"calendars"});
+        request.then(function(response) {
+          appendResults(JSON.stringify(response.result.items));
+        }, function(reason) {
+          console.log(reason);
+        });
+
+     }
+
+
+      gapi.load('client', init);
+    </script>
+  </head>
+  <body>
+    <div id="results"></div>
+  </body>
+</html>
