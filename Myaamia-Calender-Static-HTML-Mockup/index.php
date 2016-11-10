@@ -3,6 +3,7 @@
 <head>
     <title>Myaamia Calender</title>
     <script src="js/jquery.js"></script>
+    <script src="js/update-calendar.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -55,14 +56,22 @@
                 <h2 class="myaamia-yellow">Sub Heading (if needed)</h2>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="calendar">
             <div class="col-md-offset-2 col-sm-offset-2 col-md-10 col-sm-10 parchment">
-                <table id="calendar" align="center">
-		<?php
+             	<?php
 			include('LunarMonth.php');
 			$curDate = date('Y-m-d');
 			$lunarMonth = new LunarMonth($curDate);
-			print "<tr><td colspan='7'><h2>{$lunarMonth->myaamiaName}</h2><div><h3>{$lunarMonth->englishName}</h3></div></td></tr>";
+			$firstMonthDate = $lunarMonth->daysInMonth[1]->gregorianDate;
+			$lastMonthDate = end($lunarMonth->daysInMonth);
+			$lastMonthDate = $lastMonthDate->gregorianDate;
+		?>
+		<a href="#" onclick="getPreviousMonth('<? echo $firstMonthDate; ?>')"><< Previous Month</a>
+		<a href="#" onclick="getNextMonth('<? echo $lastMonthDate; ?>')" style="float:right">Next Month >></a>
+		<table id="calendar" align="center">
+		<?php
+			$lastMonthDate = strtok($lastMonthDate, '-');
+			print "<tr><td colspan='7'><h2 id='monthName'>{$lunarMonth->myaamiaName} {$lastMonthDate}</h2><div><h3 id='engMonthName'>{$lunarMonth->englishName}</h3></div></td></tr>";
 		?>
 		<tr> <!-- Day Names -->
 			<td>eelaamini-kii&#353;ikahki</td>
@@ -73,7 +82,7 @@
 			<td>yaalanokone</td>
 			<td>kaakaathsokone</td>
 		</tr>
-		<tr>
+		<tr id="calWeek-0">
                         <?php
 				$daysOfWeek = array('eelaamini-kiišikahki','nkotakone','niisšakone','nihsokone','niiyakone','yaalanokone','kaakaathsokone');
 				$i;
@@ -85,7 +94,7 @@
 					}
 				}
 				$dateIndex = 1;
-				for ($week = 0; $week < 5; $week++) {
+				for ($week = 1; $week < 6; $week++) {
 					for (; $i < 7; $i++) {
 						if ($dateIndex > count($lunarMonth->daysInMonth)) {
 							print "<td><div class='miami-label'></div><div class='gregDate'></div></td>";
@@ -96,8 +105,8 @@
 						}
 					}
 					print '</tr>';
-					if ($week != 4) {
-						print '<tr>';
+					if ($week != 5) {
+						print "<tr id='calWeek-{$week}'>";
 					}
 					$i = 0;
 				}

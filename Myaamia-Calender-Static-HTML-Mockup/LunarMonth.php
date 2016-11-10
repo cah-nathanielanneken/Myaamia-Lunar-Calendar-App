@@ -7,13 +7,16 @@
     public $numOfDaysInMonth;
 
     function __construct($curDate) {
-      $dayDiff = floor((strtotime($curDate) - strtotime('2016-02-09'))/(60*60*24));
+      $dayDiff = ceil((strtotime($curDate) - strtotime('2016-02-09'))/(60*60*24));
       $dayOfLunarYear = $this->get_day_of_lunar_year($dayDiff);
       $this->set_month_info($dayOfLunarYear);
       $this->daysInMonth = $this->create_days_for_month($dayOfLunarYear,$curDate);
     }
   
     public function get_day_of_lunar_year($dayDiff) {
+      if ($dayDiff <= 0) {
+        
+      }
       $count = 1;
       $dayOfYear = $dayDiff;
       for (; $dayOfYear > 354; $dayOfYear = $dayOfYear - 354) {
