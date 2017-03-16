@@ -1,0 +1,77 @@
+h1 {
+	text-align:center;
+}
+
+body {
+	background: 
+}
+
+table {
+	text-align:center;
+	table-layout: fixed;
+}
+
+input {
+	color: black;
+}
+
+#calendar > tbody > tr:nth-child(2) {
+	font-weight:bold;
+}
+
+.miami-label {
+	position:relative;
+	text-align:right;
+	top: 0px;
+	margin-bottom: 1cm;
+}
+
+#calendar > tbody > tr:nth-child(1) > td{
+	text-align: center;
+}
+
+.holiday {
+	text-align: left;
+	position:relative;
+	bottom:30px;
+}
+
+#calendar > tbody > tr:nth-child(3) > td:nth-child(5) > div.miami-label {
+	margin-top:20px;
+}
+
+ td {
+	border: 1px solid black;
+	text-align:center;
+	min-height: 200px;
+	width:14%;
+}
+
+tr {
+	min-height:100px;
+}
+
+.moon-word-left {
+	text-align:right;
+	font-weight: bold;
+	font-size:.5em;
+	margin-left:100%;
+}
+
+.gregDate {
+	text-align:left;
+	font-size:.9em;
+}
+
+.moon-pic img {
+	width:10%;
+	height:10%;
+	position: relative;
+	left:50%;
+	bottom:20px;
+}
+
+#calendar > tbody > tr:nth-child(5) > td:nth-child(1) > div.moon-pic > img {
+	width:25%;
+	height:25%;
+}
