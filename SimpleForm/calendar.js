@@ -1,4 +1,7 @@
 var calendarData;
+var eventData;
+var summaryArray = [];
+var gregDateArray = [];
 $(document).ready(function() {
 			
 	$("#cal").hide();
@@ -11,20 +14,52 @@ $(document).ready(function() {
 			data: JSON.stringify(data),
 			dataType: 'json',
 			success: function(data) {
+				init();
+				console.log(eventData);
 				console.log(data);
 				calendarData = data;
 				$("#params").hide();
-				generateCalendar(1);
-				$("#cal").show();
 			},
 			error: function(status) {
 				console.log(status);
 			}
 		});
+		
+		//console.log(events)
 	});
 });
 
+function init() {
+	var x;
+    gapi.client.setApiKey('AIzaSyBgO3m5gD5bahtn4LlULE9VnL3q6sKk7Kg');
+	var request = gapi.client.request({"path":"https://www.googleapis.com/calendar/v3/calendars/miamioh.edu_8lcvil6egdbsbjrggjuvrgsft4%40group.calendar.google.com/events?timeMin="+ $("#firstDayOfYear").val() +"T00%3A00%3A00%2B00%3A00&fields=items(summary%2Cstart%2Fdate%2Cend%2Fdate)", "method":"GET"});     //var request = gapi.client.request({"path":"calendars"});
+    request.then(function(response) {
+		eventData = (JSON.stringify(response.result.items));
+		eventData = JSON.parse(eventData);
+		console.log(eventData);
+		console.log("logging before calendar is generated");
+		for (var i = 0; i < eventData.length; i++) {
+			summaryArray.push(eventData[i].summary)
+	}
+	for ( var i = 0; i < eventData.length; i++) {
+		if (eventData[i].start == null)
+			gregDateArray.push(0);
+		else
+			gregDateArray.push(eventData[i].start.date);
+	}
+		generateCalendar(1);
+		$("#cal").show();
+    }, function(reason) {
+		console.log(reason);
+    });
+}
+
+
 function generateCalendar(monthIndex) {
+	
+	var eventDescription = "";
+	var dateMatch = -1;
+	
 	var month = calendarData[monthIndex];
 	var cal = "<tr id='calWeek-0'>";
 	var daysOfWeek = ['eelaamini-kiišikahki','nkotakone','niišakone','nihsokone','niiyakone','yaalanokone','kaakaathsokone'];
@@ -39,12 +74,36 @@ function generateCalendar(monthIndex) {
 	var dateIndex = 1;
 	for (week = 1; week < 6; week++) {
 		for (; i < 7; i++) {
+			dateMatch = -1;
+			eventDescription = ""
 			if (dateIndex > month.numOfDaysInMonth) {
 				cal += "<td><div class='miami-label'></div><div class='gregDate'></div></td>";
 			} else {
 				var dateObj = new Date(month.daysInMonth[dateIndex].gregorianDate);
 				gregDate = (dateObj.getUTCMonth() + 1) + "/" + dateObj.getUTCDate();
-				cal += "<td><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='gregDate'>"+gregDate+"</div></td>";
+				
+				for (var j = 0; j < gregDateArray.length; j++) {
+					var month1, day, year;
+					month1 = dateObj.getMonth() + 1;
+					day = dateObj.getDate();
+					year = dateObj.getFullYear();
+					if (day < 10)
+						day = "0" + day
+					if (month1 < 10)
+						month1 = "0" + month1
+					var convertedDate = year + "-" + month1 + "-" + day;
+					if (gregDateArray[j] == convertedDate)
+						dateMatch = j;
+				}
+				if (dateMatch > -1) {
+					eventDescription = summaryArray[dateMatch];
+				} else {
+					eventDescription == "";
+				}
+					
+				
+				//change stuff here for adding in events
+				cal += "<td><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'>"+ eventDescription +"</div><div class='gregDate'>"+gregDate+"</div></td>";
 				dateIndex++;
 			}
 		}
