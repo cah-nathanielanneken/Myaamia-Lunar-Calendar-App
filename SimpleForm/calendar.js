@@ -71,7 +71,7 @@ function generateCalendar(monthIndex) {
 			break;
 		}
 	}
-	var dateIndex = 1;
+	var dateIndex = 1, firstQSet = false, fullSet = false, secondQSet = false;
 	for (week = 1; week < 6; week++) {
 		for (; i < 7; i++) {
 			dateMatch = -1;
@@ -101,9 +101,22 @@ function generateCalendar(monthIndex) {
 					eventDescription == "";
 				}
 					
-				
+			
+				cal += "<td><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'>"+ eventDescription +"</div><div class=";
+	
 				//change stuff here for adding in events
-				cal += "<td><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'>"+ eventDescription +"</div><div class='gregDate'>"+gregDate+"</div></td>";
+				if (month.daysInMonth[dateIndex].moonPhaseName == "Full Moon" && !fullSet) {
+				  cal += "'moon-word'></div><div class='moon-pic full'><img src='waawiyiisita.png'></div><div class='gregDate'>" + gregDate + "</div></td>";
+				  fullSet = true;
+				} else if (month.daysInMonth[dateIndex].moonPhaseName == "First Quarter" && !firstQSet) {
+				  cal += "'moon-word'></div><div class='moon-pic'><img src='napale.png'></div><div class='gregDate'>" + gregDate + "</div></td>";
+				  firstQSet = true;
+				} else if (month.daysInMonth[dateIndex].moonPhaseName == "Third Quarter" && !secondQSet) {
+				  cal += "'moon-word'></div><div class='moon-pic'><img src='napale-neepiki.png'></div><div class='gregDate'>" + gregDate + "</div></td>";
+				  secondQSet = true;
+				} else {
+				  cal += "'gregDate'>" + gregDate + "</div></td>";
+				}
 				dateIndex++;
 			}
 		}

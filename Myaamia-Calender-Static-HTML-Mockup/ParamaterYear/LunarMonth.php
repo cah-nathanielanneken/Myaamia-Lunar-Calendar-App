@@ -5,61 +5,60 @@
     public $daysInMonth;
     public $englishName;
     public $numOfDaysInMonth;
+    public $removalDays;
 
-    function __construct($curDate) {
-      $dayDiff = ceil((strtotime($curDate) - strtotime('2016-02-09'))/(60*60*24));
-      $dayOfLunarYear = $this->get_day_of_lunar_year($dayDiff);
-      $this->set_month_info($dayOfLunarYear);
-      $this->daysInMonth = $this->create_days_for_month($dayOfLunarYear,$curDate);
+    function __construct($firstDayOfYear, $curDate, $isExtraMoon, $removalDays) {
+      $dayDiff = ceil((strtotime($curDate) - strtotime($firstDayOfYear))/(60*60*24));
+      $dayOfLunarYear = $this->get_day_of_lunar_year($dayDiff, $removalDays, $firstDayOfYear);
+      $this->set_month_info($dayOfLunarYear, $isExtraMoon, $removalDays);
+      $this->daysInMonth = $this->create_days_for_month($dayOfLunarYear,$curDate, $removalDays, $isExtraMoon);
+    }
+  
+    public function get_day_of_lunar_year($dayDiff, $removalDays, $firstDayOfYear) {
+      $daySub = 0;
+      foreach ($removalDays as &$removalDay) {
+        $tempDayDiff = ceil((strtotime($removalDay) - strtotime($firstDayOfYear))/(60*60*24)); 
+        if ($tempDayDiff < $dayDiff) {
+          $daySub = $daySub + 1;
+        } else if ($tempDayDiff == $dayDiff) {
+          return -1;
+        }
+      }
+      return $dayDiff - $daySub;    
     }
 
-    public function get_day_of_lunar_year($dayDiff) {
-      if ($dayDiff <= 0) {
-        $dayDiff += 354;
-        $count = 0;
-        while ($dayDiff <= 0) {
-          if ($count % 3 == 0) {
-            if ($dayDiff >= -28) {
-              break;
-            }
-            $dayDiff += 29;
-          }
-          $dayDiff += 354;
-          $count++;
-        }
-        return $dayDiff;
-      }
-      $count = 1;
-      $dayOfYear = $dayDiff;
-      for (; $dayOfYear > 354; $dayOfYear = $dayOfYear - 354) {
-        if ($count % 3 == 0) {
-          if ($dayOfYear <= 383) {
-            break;
-          }
-          $dayOfYear = $dayOfYear - 29;
-        }
-        $count++;
-      }
-      if ($count % 3 == 0) {
-        $dayOfYear = $dayOfYear - 29;
-      }
-      return $dayOfYear;
-    }
-
-    public function create_days_for_month($dayOfLunarYear,$curDate) {
+    public function create_days_for_month($dayOfLunarYear,$curDate, $removalDays, $isExtraMoon) {
       $days = array();
+      if ($dayOfLunarYear == -1) {
+        return $days;
+      } else if ($isExtraMoon) {
+        $dayOfLunarYear = $dayOfLunarYear - 29;
+      }
       $dayOfLunarMonth = $this->lunar_day_of_month($dayOfLunarYear);
-      $dayOfLunarMonth--;
       $firstDate = new DateTime($curDate);
       $firstDate->sub(new DateInterval('P'.$dayOfLunarMonth.'D'));
       for ($i = 1; $i <= $this->numOfDaysInMonth; $i++) {
-        $days[$i] = new LunarDay(date_format($firstDate,'Y-m-d'), $i);
+        if (in_array(date_format($firstDate, 'Y-m-d'), $removalDays)) {
+          $i--;
+        } else {
+          $days[$i] = new LunarDay(date_format($firstDate,'Y-m-d'), $i);
+        }
         $firstDate->add(new DateInterval('P1D'));
       }
       return $days;
     }
 
-    public function set_month_info($dayOfLunarYear) {
+    public function set_month_info($dayOfLunarYear, $isExtraMoon, $removalDays) {
+      if ($dayOfLunarYear == -1) {
+        $this->numOfDaysInMonth = -1;
+        $this->englishName = 'Day Removed';
+        $this->myaamiaName = 'Day Removed';
+        return;
+      } 
+      if ($isExtraMoon) {
+        $dayOfLunarYear = $dayOfLunarYear - 29;
+      }
+      $this->removalDays = $removalDays; 
       if ($dayOfLunarYear <= 0) {
         $this->numOfDaysInMonth = 29;
         $this->englishName = 'Lost Moon';

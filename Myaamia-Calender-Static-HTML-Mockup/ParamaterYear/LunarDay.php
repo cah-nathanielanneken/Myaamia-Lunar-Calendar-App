@@ -1,5 +1,5 @@
 <?php
-  include 'moonPhase/php-moon-phase/Solaris/MoonPhase.php';
+  include '../moonPhase/php-moon-phase/Solaris/MoonPhase.php';
 
   class LunarDay {
     public $myaamiaName;
@@ -7,6 +7,7 @@
     public $gregorianDate;
     public $dayOfLunarMonth;
     public $moonPhase;
+    public $moonPhaseName;
 
     function __construct($curDate, $dayOfMonth) {
       $this->myaamiaName = $this->convert_day($curDate);
@@ -15,6 +16,7 @@
       $this->englishName = date('l', strtotime($curDate));
       $this->dayOfLunarMonth = $dayOfMonth;
       $this->moonPhase = (new Solaris\MoonPhase(strtotime($curDate)))->phase();
+      $this->moonPhaseName = (new Solaris\MoonPhase(strtotime($curDate)))->phase_name(); 
     }
 
     public function convert_day($date) {

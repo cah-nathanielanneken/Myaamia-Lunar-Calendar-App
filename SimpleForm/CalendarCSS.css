@@ -71,7 +71,14 @@ tr {
 	bottom:20px;
 }
 
-#calendar > tbody > tr:nth-child(5) > td:nth-child(1) > div.moon-pic > img {
+#calendar div.full > img {
+	width: 40% !important;
+	height: 40% !important;
+}
+
+#calendar div.moon-pic > img {
 	width:25%;
 	height:25%;
 }
+
+
