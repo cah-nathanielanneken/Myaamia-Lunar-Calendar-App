@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://apis.google.com/js/api.js"></script>
+<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+    <title>Myaamia Calender</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/CalendarCSS.css">
+    <script src="js/calendar.js"></script>
+</head>
+<body>
+<!--Bootstrap Navbar-->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid ">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <!--Probably should contain logo instead of text-->
+                    <a class="navbar-brand" href="index.html">Myaamia Calendar</a>
+                </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right">
+                    <li>
+                        <a href="#"><img src="res/images/search_white.png" class="icon-top"> Search</a>
+                    </li>
+                    <li>
+                        <a href="#"><img src="res/images/browse_white.png" class="icon-top"> Browse</a>
+                    </li>
+                    <li>
+                        <a href="#"><img src="res/images/feedback_white.png" class="icon-top"> Feedback</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+<!--Ribbon artwork-->
+    <div class="nav-ribbon"></div>
+    <div class="side-ribbon"></div>
+
+    <br><br><br><br><br>
+
+    <div class="mobile-ribbon"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-2 col-sm-offset-2 col-md-6 col-sm-6">
+                <h1>Welcome To The Myaamia Calendar!</h1>
+                <h2 class="myaamia-yellow">Sub Heading (if needed)</h2>
+            </div>
+        </div>
+        <div class="row col-md-offset-2 col-sm-offset-2 col-md-10 col-sm-10" id="params">
+          <form action="test.php" method="post">
+	    <div class="form-group">
+	      <label for="firstDayOfYear">First Day of Year:</label>
+    	      <input id="firstDayOfYear" name="firstDayOfYear" type="date"><br>
+	      <label for="isExtraMoon">Is this an extra month year?</label><br>
+	      <input type="radio" name="isExtraMoon" id="isExtraMoon" value="True">Yes<br>
+	      <input type="radio" name="isExtraMoon" id="isExtraMoon" value="False">No<br>
+  	      <label for="removalDays">Enter days that need to be removed:</label>
+	      <input name="removalDays" id="removalDays"><br>
+	      <input type="submit" class="btn btn-primary" value="Generate Calendar">
+	    </div>
+	  </form>
+        </div>
+        <div class="row" id="cal">
+            <div class="col-md-offset-2 col-sm-offset-2 col-md-10 col-sm-10 parchment">
+		<div id="monthNav"></div>
+                <table id="calendar" align="center">
+		<tr><td colspan="7"><h2></h2><div><h3></h3></div></td></tr>
+		<tr> <!-- Day Names -->
+			<td>eelaamini-kii&#353;ikahki</td>
+			<td>nkotakone</td>
+			<td>niis&#353;akone</td>
+			<td>nihsokone</td>
+			<td>niiyakone</td>
+			<td>yaalanokone</td>
+			<td>kaakaathsokone</td>
+		</tr>
+	</table>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+</body>
+</html>
