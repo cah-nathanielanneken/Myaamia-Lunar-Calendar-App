@@ -10,7 +10,7 @@ $(document).ready(function() {
 		var data = {"firstDayOfYear":$("#firstDayOfYear").val(), "isExtraMoon":$("input[name='isExtraMoon']:checked").val(), "removalDays":[]};
 		$.ajax({
 			method:"POST",
-			url: "/~annekent/capstone/Myaamia-Lunar-Calendar-App/ParamaterYear/getYear.php",
+			url: "ParamaterYear/getYear.php",
 			data: JSON.stringify(data),
 			dataType: 'json',
 			success: function(data) {
