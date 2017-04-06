@@ -27,6 +27,7 @@ $(document).ready(function() {
 		
 		//console.log(events)
 	});
+
 });
 
 function init() {
@@ -102,8 +103,8 @@ function generateCalendar(monthIndex) {
 				}
 					
 			
-				cal += "<td><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'>"+ eventDescription +"</div><div class=";
-	
+				cal += "<td><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'><div class='description'>"+ eventDescription +"</div>"+ eventDescription +"</div><div class=";
+
 				//change stuff here for adding in events
 				if (month.daysInMonth[dateIndex].moonPhaseName == "Full Moon" && !fullSet) {
 				  cal += "'moon-word'></div><div class='moon-pic full'><img src='res/images/waawiyiisita.png'></div><div class='gregDate'>" + gregDate + "</div></td>";
@@ -148,4 +149,12 @@ function generateCalendar(monthIndex) {
 
 	}  
 	$("#calendar").append(cal);	
+
+	//This allows the popup div to appear/disappear
+
+	$('.events').mouseover(function() {
+	  $(this).children(".description").show();
+	}).mouseout(function() {
+	  $(this).children(".description").hide();
+	});
 }

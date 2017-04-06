@@ -81,4 +81,19 @@ tr {
 	height:25%;
 }
 
+.description {
+    display:none;
+    position:absolute;
+    border:1px solid #000;
+    width:250px;
+    height:150px;
+    margin-left:80%;
+    background:#ffff80;
+    z-index:10;
+    top:-50px;
+}
+
+.events {
+    position:relative;
+}
 
