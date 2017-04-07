@@ -2,17 +2,22 @@ var calendarData;
 var eventData;
 var summaryArray = [];
 var gregDateArray = [];
+var descArray = [];
 var monthIndex;
 
 function init() {
 	var x;
     gapi.client.setApiKey('AIzaSyBgO3m5gD5bahtn4LlULE9VnL3q6sKk7Kg');
-	var request = gapi.client.request({"path":"https://www.googleapis.com/calendar/v3/calendars/miamioh.edu_8lcvil6egdbsbjrggjuvrgsft4%40group.calendar.google.com/events?timeMin="+ $("#firstDayOfYear").val() +"T00%3A00%3A00%2B00%3A00&fields=items(summary%2Cstart%2Fdate%2Cend%2Fdate)", "method":"GET"});     //var request = gapi.client.request({"path":"calendars"});
+	var request = gapi.client.request({"path":"https://www.googleapis.com/calendar/v3/calendars/miamioh.edu_8lcvil6egdbsbjrggjuvrgsft4%40group.calendar.google.com/events?timeMin="+ $("#firstDayOfYear").val() +"T00%3A00%3A00%2B00%3A00", "method":"GET"});     //var request = gapi.client.request({"path":"calendars"});
     request.then(function(response) {
-		eventData = (JSON.stringify(response.result.items));
-		eventData = JSON.parse(eventData);
-		for (var i = 0; i < eventData.length; i++) {
-			summaryArray.push(eventData[i].summary)
+	eventData = (JSON.stringify(response.result.items));
+	eventData = JSON.parse(eventData);
+	for (var i = 0; i < eventData.length; i++) {
+		summaryArray.push(eventData[i].summary);
+		if (!("description" in eventData[i])) {
+			eventData[i].description = "No description available";
+		}
+		descArray.push(eventData[i].description);
 	}
 	for ( var i = 0; i < eventData.length; i++) {
 		if (eventData[i].start == null)
@@ -74,12 +79,14 @@ function generateCalendar(monthIndex) {
 				}
 				if (dateMatch > -1) {
 					eventDescription = summaryArray[dateMatch];
+					eventDetails = descArray[dateMatch];
 				} else {
 					eventDescription == "";
+					eventDetails = "";
 				}
 					
 			
-				cal += "<td><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'>"+ eventDescription +"</div><div class=";
+				cal += "<td><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'><div class='description'><b>"+ eventDescription + "</b><br>" + eventDetails  +"</div>"+ eventDescription +"</div><div class=";
 	
 				//change stuff here for adding in events
 				if (month.daysInMonth[dateIndex].moonPhaseName == "Full Moon" && !fullSet) {
@@ -124,5 +131,13 @@ function generateCalendar(monthIndex) {
 		$("#next").css("text-decoration", "none");
 
 	}  
-	$("#calendar").append(cal);	
+	$("#calendar").append(cal);
+
+	//This allows the popup div to appear/disappear
+
+	$('.events').mouseover(function() {
+	  $(this).children(".description").show();
+	}).mouseout(function() {
+	  $(this).children(".description").hide();
+	});	
 }
