@@ -7,10 +7,10 @@
     public $numOfDaysInMonth;
     public $removalDays;
 
-    function __construct($firstDayOfYear, $curDate, $isExtraMoon, $removalDays) {
+    function __construct($firstDayOfYear, $curDate, $isExtraMoon, $daysInFirstMonth, $removalDays) {
       $dayDiff = ceil((strtotime($curDate) - strtotime($firstDayOfYear))/(60*60*24));
       $dayOfLunarYear = $this->get_day_of_lunar_year($dayDiff, $removalDays, $firstDayOfYear);
-      $this->set_month_info($dayOfLunarYear, $isExtraMoon, $removalDays);
+      $this->set_month_info($dayOfLunarYear, $isExtraMoon, $removalDays, $daysInFirstMonth);
       $this->daysInMonth = $this->create_days_for_month($dayOfLunarYear,$curDate, $removalDays, $isExtraMoon);
     }
   
@@ -48,7 +48,7 @@
       return $days;
     }
 
-    public function set_month_info($dayOfLunarYear, $isExtraMoon, $removalDays) {
+    public function set_month_info($dayOfLunarYear, $isExtraMoon, $removalDays, $daysInFirstMonth) {
       if ($dayOfLunarYear == -1) {
         $this->numOfDaysInMonth = -1;
         $this->englishName = 'Day Removed';
@@ -57,58 +57,63 @@
       } 
       if ($isExtraMoon) {
         $dayOfLunarYear = $dayOfLunarYear - 29;
+	$day1 = $daysInFirstMonth;
+	$day2 = ($daysInFirstMonth == 29 ? 30 : 29);
+      } else {
+	$day1 = ($daysInFirstMonth == 29 ? 30 : 29);
+	$day2 = $daysInFirstMonth;
       }
       $this->removalDays = $removalDays; 
       if ($dayOfLunarYear <= 0) {
-        $this->numOfDaysInMonth = 29;
+        $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Lost Moon';
         $this->myaamiaName = 'waawiita kiilhswa';
       } else if ($dayOfLunarYear <= 30) {
-        $this->numOfDaysInMonth = 30;
+        $this->numOfDaysInMonth = $day2;
         $this->englishName = 'Young Bear Moon';
         $this->myaamiaName = 'mahkoonsa kiilhswa';
       } else if ($dayOfLunarYear <= 59) {
-        $this->numOfDaysInMonth = 29;
+        $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Crow Moon';
         $this->myaamiaName = 'aanteekwa kiilhswa';
       } else if ($dayOfLunarYear <= 89) {
-        $this->numOfDaysInMonth = 30;
+        $this->numOfDaysInMonth = $day2;
         $this->englishName = 'Sandhill Crane Moon';
         $this->myaamiaName = 'cecaahkwa kiilhswa';
       } else if ($dayOfLunarYear <= 118) {
-        $this->numOfDaysInMonth = 29;
+        $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Whippoorwill Moon';
         $this->myaamiaName = 'wiihkoowia kiilhswa';
       } else if ($dayOfLunarYear <= 148) {
-        $this->numOfDaysInMonth = 30;
+        $this->numOfDaysInMonth = $day2;
         $this->englishName = 'Mid-Summer Moon';
         $this->myaamiaName = 'paaphsaahka niipinwiki';
       } else if ($dayOfLunarYear <= 177) { 
-        $this->numOfDaysInMonth = 29;
+        $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Green Corn Moon';
         $this->myaamiaName = 'kiišiinkwia kiilhswa';
       } else if ($dayOfLunarYear <= 207) {
-        $this->numOfDaysInMonth = 30;
+        $this->numOfDaysInMonth = $day2;
         $this->englishName = 'Elk Moon';
         $this->myaamiaName = 'mihšiiwia kiilhswa';
       } else if ($dayOfLunarYear <= 236) {
-        $this->numOfDaysInMonth = 29;
+        $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Grass Burning Moon';
         $this->myaamiaName = 'šaašaakayolia kiilhswa';
       } else if ($dayOfLunarYear <= 266) {
-        $this->numOfDaysInMonth = 30;
+        $this->numOfDaysInMonth = $day2;
         $this->englishName = 'Smokey Burning Moon';
         $this->myaamiaName = 'kiiyolia kiilhswa';
       } else if ($dayOfLunarYear <= 295) {
-        $this->numOfDaysInMonth = 29;
+        $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Young Buck Moon';
         $this->myaamiaName = 'ayaapeensa kiilhswa';
       } else if ($dayOfLunarYear <= 325) {
-        $this->numOfDaysInMonth = 30;
+        $this->numOfDaysInMonth = $day2;
         $this->englishName = 'Buck Moon';
         $this->myaamiaName = 'ayaapia kiilhswa';
       } else if ($dayOfLunarYear <= 354) {
-        $this->numOfDaysInMonth = 29;
+        $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Bear Moon';
         $this->myaamiaName = 'mahkwa kiilhswa';
       }
