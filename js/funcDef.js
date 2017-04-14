@@ -53,7 +53,7 @@ function generateCalendar(monthIndex) {
 			break;
 		}
 	}
-	var dateIndex = 1, firstQSet = false, fullSet = false, secondQSet = false;
+	var dateIndex = 1;
 	for (week = 1; week < 6; week++) {
 		for (; i < 7; i++) {
 			dateMatch = -1;
@@ -86,21 +86,9 @@ function generateCalendar(monthIndex) {
 				}
 					
 			
-				cal += "<td><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'><div class='description'><b>"+ eventDescription + "</b><br>" + eventDetails  +"</div>"+ eventDescription +"</div><div class=";
+				cal += "<td data-moon-phase-name='" + month.daysInMonth[dateIndex].moonPhaseName +"' data-moon-phase="+ month.daysInMonth[dateIndex].moonPhase  +"><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'><div class='description'><b>"+ eventDescription + "</b><br>" + eventDetails  +"</div>"+ eventDescription +"</div><div class=";
 	
-				//change stuff here for adding in events
-				if (month.daysInMonth[dateIndex].moonPhaseName == "Full Moon" && !fullSet) {
-				  cal += "'moon-word'></div><div class='moon-pic full'><img src='res/images/waawiyiisita.png'></div><div class='gregDate'>" + gregDate + "</div></td>";
-				  fullSet = true;
-				} else if (month.daysInMonth[dateIndex].moonPhaseName == "First Quarter" && !firstQSet) {
-				  cal += "'moon-word'></div><div class='moon-pic'><img src='res/images/napale.png'></div><div class='gregDate'>" + gregDate + "</div></td>";
-				  firstQSet = true;
-				} else if (month.daysInMonth[dateIndex].moonPhaseName == "Third Quarter" && !secondQSet) {
-				  cal += "'moon-word'></div><div class='moon-pic'><img src='res/images/napale-neepiki.png'></div><div class='gregDate'>" + gregDate + "</div></td>";
-				  secondQSet = true;
-				} else {
-				  cal += "'gregDate'>" + gregDate + "</div></td>";
-				}
+				cal += "'gregDate'>" + gregDate + "</div></td>";
 				dateIndex++;
 			}
 		}
@@ -132,6 +120,38 @@ function generateCalendar(monthIndex) {
 
 	}  
 	$("#calendar").append(cal);
+
+	var fullMoon = $("td[data-moon-phase-name='Full Moon']"), firstQuarter = $("td[data-moon-phase-name='First Quarter']"), thirdQuarter = $("td[data-moon-phase-name='Third Quarter']");
+
+	var day = fullMoon[0], moonSize = parseFloat(fullMoon[0].attributes['data-moon-phase'].value);
+	for (var i = 1; i < fullMoon.length; i++) {
+		var moonSizetmp = parseFloat(fullMoon[i].attributes['data-moon-phase'].value);
+		if (Math.abs(moonSizetmp - 0.5) < Math.abs(moonSize - 0.5)) {
+			day = fullMoon[i];
+			moonSize = moonSizetmp;
+		} 
+	}
+	$("<div class='moon-pic full'><img src='res/images/waawiyiisita.png'></div>").insertBefore($(day).children().last());
+	
+	day = firstQuarter[0], moonSize = parseFloat(firstQuarter[0].attributes['data-moon-phase'].value);
+	for (var i = 1; i < firstQuarter.length; i++) {
+		var moonSizetmp = parseFloat(firstQuarter[i].attributes['data-moon-phase'].value);
+		if (Math.abs(moonSizetmp - 0.25) < Math.abs(moonSize - 0.25)) {
+			day = firstQuarter[i];
+			moonSize = moonSizetmp;
+		} 
+	}
+	$("<div class='moon-pic'><img src='res/images/napale.png'></div>").insertBefore($(day).children().last());
+
+	var day = thirdQuarter[0], moonSize = parseFloat(thirdQuarter[0].attributes['data-moon-phase'].value);
+	for (var i = 1; i < thirdQuarter.length; i++) {
+		var moonSizetmp = parseFloat(thirdQuarter[i].attributes['data-moon-phase'].value);
+		if (Math.abs(moonSizetmp - 0.75) < Math.abs(moonSize - 0.75)) {
+			day = thirdQuarter[i];
+			moonSize = moonSizetmp;
+		} 
+	}
+	$("<div class='moon-pic'><img src='res/images/napale-neepiki.png'></div>").insertBefore($(day).children().last());
 
 	//This allows the popup div to appear/disappear
 
