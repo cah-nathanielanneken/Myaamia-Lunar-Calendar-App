@@ -67,7 +67,7 @@ function generateCalendar(monthIndex) {
 				for (var j = 0; j < gregDateArray.length; j++) {
 					var month1, day, year;
 					month1 = dateObj.getMonth() + 1;
-					day = dateObj.getDate();
+					day = dateObj.getDate() + 1;
 					year = dateObj.getFullYear();
 					if (day < 10)
 						day = "0" + day
