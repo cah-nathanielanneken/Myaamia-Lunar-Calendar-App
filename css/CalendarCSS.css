@@ -24,6 +24,8 @@ input {
 	text-align:right;
 	top: 0px;
 	margin-bottom: 1cm;
+	font-size: 1.4em;
+	font-weight: bold;
 }
 
 #calendar > tbody > tr:nth-child(1) > td{
