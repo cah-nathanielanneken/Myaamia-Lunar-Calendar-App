@@ -36,6 +36,17 @@ function init() {
     });
 }
 
+function getFirstDayOfPhase(dayArr, perfPhase) {
+	var day = dayArr[0], moonSize = parseFloat(dayArr[0].attributes['data-moon-phase'].value);
+	for (var i = 1; i < dayArr.length; i++) {
+		var moonSizetmp = parseFloat(dayArr[i].attributes['data-moon-phase'].value);
+		if (Math.abs(moonSizetmp - perfPhase) < Math.abs(moonSize - perfPhase)) {
+			day = dayArr[i];
+			moonSize = moonSizetmp;
+		}
+	}
+	return day;
+}
 
 function generateCalendar(monthIndex) {
 	
@@ -122,36 +133,17 @@ function generateCalendar(monthIndex) {
 	$("#calendar").append(cal);
 
 	var fullMoon = $("td[data-moon-phase-name='Full Moon']"), firstQuarter = $("td[data-moon-phase-name='First Quarter']"), thirdQuarter = $("td[data-moon-phase-name='Third Quarter']");
-
-	var day = fullMoon[0], moonSize = parseFloat(fullMoon[0].attributes['data-moon-phase'].value);
-	for (var i = 1; i < fullMoon.length; i++) {
-		var moonSizetmp = parseFloat(fullMoon[i].attributes['data-moon-phase'].value);
-		if (Math.abs(moonSizetmp - 0.5) < Math.abs(moonSize - 0.5)) {
-			day = fullMoon[i];
-			moonSize = moonSizetmp;
-		} 
-	}
+	
+	var day = getFirstDayOfPhase(fullMoon, 0.5);
 	$("<div class='moon-pic full'><img src='res/images/waawiyiisita.png'></div>").insertBefore($(day).children().last());
 	
-	day = firstQuarter[0], moonSize = parseFloat(firstQuarter[0].attributes['data-moon-phase'].value);
-	for (var i = 1; i < firstQuarter.length; i++) {
-		var moonSizetmp = parseFloat(firstQuarter[i].attributes['data-moon-phase'].value);
-		if (Math.abs(moonSizetmp - 0.25) < Math.abs(moonSize - 0.25)) {
-			day = firstQuarter[i];
-			moonSize = moonSizetmp;
-		} 
-	}
+	day = getFirstDayOfPhase(firstQuarter, 0.25);
 	$("<div class='moon-pic'><img src='res/images/napale.png'></div>").insertBefore($(day).children().last());
 
-	var day = thirdQuarter[0], moonSize = parseFloat(thirdQuarter[0].attributes['data-moon-phase'].value);
-	for (var i = 1; i < thirdQuarter.length; i++) {
-		var moonSizetmp = parseFloat(thirdQuarter[i].attributes['data-moon-phase'].value);
-		if (Math.abs(moonSizetmp - 0.75) < Math.abs(moonSize - 0.75)) {
-			day = thirdQuarter[i];
-			moonSize = moonSizetmp;
-		} 
-	}
+	day = getFirstDayOfPhase(thirdQuarter, 0.75);
 	$("<div class='moon-pic'><img src='res/images/napale-neepiki.png'></div>").insertBefore($(day).children().last());
+
+
 
 	//This allows the popup div to appear/disappear
 
