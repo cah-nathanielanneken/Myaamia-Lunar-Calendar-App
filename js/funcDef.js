@@ -51,7 +51,7 @@ function getFirstDayOfPhase(dayArr, perfPhase) {
 function generateCalendar(monthIndex) {
 	
 	var eventDescription = "";
-	var dateMatch = -1;
+	var dateMatch = -1, id = "";
 	
 	var month = calendarData[monthIndex];
 	var cal = "<tr id='calWeek-0'>";
@@ -95,9 +95,19 @@ function generateCalendar(monthIndex) {
 					eventDescription == "";
 					eventDetails = "";
 				}
+
+				id = "";
+
+				if (eventDescription.toLowerCase() == "beginning of napale") {
+					id = "firstQ";
+				} else if (eventDescription.toLowerCase() == "beginning of waawiyiisita") {
+					id = "secondQ";
+				} else if (eventDescription.toLowerCase() == "beginning of napale neepiki") {
+					id = "thirdQ";
+				}
 					
 			
-				cal += "<td data-moon-phase-name='" + month.daysInMonth[dateIndex].moonPhaseName +"' data-moon-phase="+ month.daysInMonth[dateIndex].moonPhase  +"><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'><div class='description'><b>"+ eventDescription + "</b><br>" + eventDetails  +"</div>"+ eventDescription +"</div><div class=";
+				cal += "<td id='" + id + "' data-moon-phase-name='" + month.daysInMonth[dateIndex].moonPhaseName +"' data-moon-phase="+ month.daysInMonth[dateIndex].moonPhase  +"><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'><div class='description'><b>"+ eventDescription + "</b><br>" + eventDetails  +"</div>"+ eventDescription +"</div><div class=";
 	
 				cal += "'gregDate'>" + gregDate + "</div></td>";
 				dateIndex++;
@@ -133,14 +143,14 @@ function generateCalendar(monthIndex) {
 	$("#calendar").append(cal);
 
 	var fullMoon = $("td[data-moon-phase-name='Full Moon']"), firstQuarter = $("td[data-moon-phase-name='First Quarter']"), thirdQuarter = $("td[data-moon-phase-name='Third Quarter']");
-	
-	var day = getFirstDayOfPhase(fullMoon, 0.5);
+
+	var day = $("#secondQ")[0] === undefined ? getFirstDayOfPhase(fullMoon, 0.5) : $("#secondQ")[0];	
 	$("<div class='moon-pic full'><img src='res/images/waawiyiisita.png'></div>").insertBefore($(day).children().last());
 	
-	day = getFirstDayOfPhase(firstQuarter, 0.25);
+	day = $("#firstQ")[0] === undefined ? getFirstDayOfPhase(firstQuarter, 0.25) : $("#firstQ")[0];
 	$("<div class='moon-pic'><img src='res/images/napale.png'></div>").insertBefore($(day).children().last());
 
-	day = getFirstDayOfPhase(thirdQuarter, 0.75);
+	day = $("#thirdQ")[0] === undefined ? getFirstDayOfPhase(thirdQuarter, 0.75) : $("#thirdQ")[0];
 	$("<div class='moon-pic'><img src='res/images/napale-neepiki.png'></div>").insertBefore($(day).children().last());
 
 
