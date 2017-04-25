@@ -39,20 +39,14 @@ input {
 }
 
 #calendar > tbody > tr  > td > div.miami-label {
-	height: 50px;
-}
-
-.moon-wrapper {
-	position: relative;
-	width: 0;
-	height: 0;
+	margin-top:20px;
 }
 
  td {
 	border: 1px solid black;
 	text-align:center;
 	height: 150px;
-	width:14.285%;
+	width:14%;
 }
 
 #dayNames > td {
@@ -73,22 +67,14 @@ tr {
 .gregDate {
 	text-align:left;
 	font-size:.9em;
-	padding-top: 20px;
 }
 
 .moon-pic img {
-	width:30px;
-	height:30px;
-	position: absolute;
-	right:-15px;
-	bottom:12px;
-}
-
-div.full > div.moon-wrapper >  img {
-	width: 53px;
-	height: 53px;
-	right: -26px;
-	bottom: 2px;
+	width:10%;
+	height:10%;
+	position: relative;
+	right:50%;
+	bottom:20px;
 }
 
 #calendar div.full > img {
@@ -119,14 +105,4 @@ div.full > div.moon-wrapper >  img {
 
 .events {
     position:relative;
-    height: 0;
-}
-
-.event-name {
-	position: absolute;
-	bottom: 0px;
-	padding-left: 15px;
-	padding-right: 15px;
-	word-wrap: break-word;
-	width: 100%;
 }

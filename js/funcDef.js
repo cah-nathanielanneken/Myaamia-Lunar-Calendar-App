@@ -107,7 +107,7 @@ function generateCalendar(monthIndex) {
 				}
 					
 			
-				cal += "<td id='" + id + "' data-moon-phase-name='" + month.daysInMonth[dateIndex].moonPhaseName +"' data-moon-phase="+ month.daysInMonth[dateIndex].moonPhase  +"><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'><div class='description'><b>"+ eventDescription + "</b><br>" + eventDetails  +"</div>"+ eventDescription +"</div><div class=";
+				cal += "<td id='" + id + "' data-moon-phase-name='" + month.daysInMonth[dateIndex].moonPhaseName +"' data-moon-phase="+ month.daysInMonth[dateIndex].moonPhase  +"><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'><div class='description'><b>"+ eventDescription + "</b><br>" + eventDetails  +"</div><div class='event-name'>"+ eventDescription +"</div></div><div class=";
 	
 				cal += "'gregDate'>" + gregDate + "</div></td>";
 				dateIndex++;
@@ -145,13 +145,13 @@ function generateCalendar(monthIndex) {
 	var fullMoon = $("td[data-moon-phase-name='Full Moon']"), firstQuarter = $("td[data-moon-phase-name='First Quarter']"), thirdQuarter = $("td[data-moon-phase-name='Third Quarter']");
 
 	var day = $("#secondQ")[0] === undefined ? getFirstDayOfPhase(fullMoon, 0.5) : $("#secondQ")[0];	
-	$("<div class='moon-pic full'><img src='res/images/waawiyiisita.png'></div>").insertBefore($(day).children().last());
+	$("<div class='moon-pic full'><div class='moon-wrapper'><img src='res/images/waawiyiisita.png'></div></div>").insertBefore($(day).children().last());
 	
 	day = $("#firstQ")[0] === undefined ? getFirstDayOfPhase(firstQuarter, 0.25) : $("#firstQ")[0];
-	$("<div class='moon-pic'><img src='res/images/napale.png'></div>").insertBefore($(day).children().last());
+	$("<div class='moon-pic'><div class='moon-wrapper'><img src='res/images/napale.png'></div></div>").insertBefore($(day).children().last());
 
 	day = $("#thirdQ")[0] === undefined ? getFirstDayOfPhase(thirdQuarter, 0.75) : $("#thirdQ")[0];
-	$("<div class='moon-pic'><img src='res/images/napale-neepiki.png'></div>").insertBefore($(day).children().last());
+	$("<div class='moon-pic'><div class='moon-wrapper'><img src='res/images/napale-neepiki.png'></div></div>").insertBefore($(day).children().last());
 
 
 
