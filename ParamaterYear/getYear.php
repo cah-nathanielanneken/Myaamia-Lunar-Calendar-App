@@ -18,6 +18,12 @@
 	$isExtraMoon = False;
   }
 
+  if ($_POST['daysInFirstMonth'] == '29') {
+	$_POST['daysInFirstMonth'] = 29;
+  } else {
+	$_POST['daysInFirstMonth'] = 30;
+  }
+
   $date = date('Y-m-d', strtotime($_POST['firstDayOfYear']. ' + 1 days'));
   $month = new LunarMonth($_POST['firstDayOfYear'], $date, $isExtraMoon, $_POST['daysInFirstMonth'], $_POST['removalDays']);
   $year = array();

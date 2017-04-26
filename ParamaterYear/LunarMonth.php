@@ -11,7 +11,7 @@
       $dayDiff = ceil((strtotime($curDate) - strtotime($firstDayOfYear))/(60*60*24));
       $dayOfLunarYear = $this->get_day_of_lunar_year($dayDiff, $removalDays, $firstDayOfYear);
       $this->set_month_info($dayOfLunarYear, $isExtraMoon, $removalDays, $daysInFirstMonth);
-      $this->daysInMonth = $this->create_days_for_month($dayOfLunarYear,$curDate, $removalDays, $isExtraMoon);
+      $this->daysInMonth = $this->create_days_for_month($dayOfLunarYear,$curDate, $removalDays, $isExtraMoon, $daysInFirstMonth);
     }
   
     public function get_day_of_lunar_year($dayDiff, $removalDays, $firstDayOfYear) {
@@ -27,14 +27,14 @@
       return $dayDiff - $daySub;    
     }
 
-    public function create_days_for_month($dayOfLunarYear,$curDate, $removalDays, $isExtraMoon) {
+    public function create_days_for_month($dayOfLunarYear,$curDate, $removalDays, $isExtraMoon, $daysInFirstMonth) {
       $days = array();
       if ($dayOfLunarYear == -1) {
         return $days;
       } else if ($isExtraMoon) {
-        $dayOfLunarYear = $dayOfLunarYear - 29;
+        $dayOfLunarYear = $dayOfLunarYear - $daysInFirstMonth;
       }
-      $dayOfLunarMonth = $this->lunar_day_of_month($dayOfLunarYear);
+      $dayOfLunarMonth = $this->lunar_day_of_month($dayOfLunarYear, $daysInFirstMonth, $isExtraMoon);
       $firstDate = new DateTime($curDate);
       $firstDate->sub(new DateInterval('P'.$dayOfLunarMonth.'D'));
       for ($i = 1; $i <= $this->numOfDaysInMonth; $i++) {
@@ -56,7 +56,7 @@
         return;
       } 
       if ($isExtraMoon) {
-        $dayOfLunarYear = $dayOfLunarYear - 29;
+        $dayOfLunarYear = $dayOfLunarYear - $daysInFirstMonth;
 	$day1 = $daysInFirstMonth;
 	$day2 = ($daysInFirstMonth == 29 ? 30 : 29);
       } else {
@@ -68,84 +68,91 @@
         $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Lost Moon';
         $this->myaamiaName = 'waawiita kiilhswa';
-      } else if ($dayOfLunarYear <= 30) {
+      } else if ($dayOfLunarYear <= $day2) {
         $this->numOfDaysInMonth = $day2;
         $this->englishName = 'Young Bear Moon';
         $this->myaamiaName = 'mahkoonsa kiilhswa';
-      } else if ($dayOfLunarYear <= 59) {
+      } else if ($dayOfLunarYear <= $day2 + $day1) {
         $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Crow Moon';
         $this->myaamiaName = 'aanteekwa kiilhswa';
-      } else if ($dayOfLunarYear <= 89) {
+      } else if ($dayOfLunarYear <= ($day2 * 2) + $day1) {
         $this->numOfDaysInMonth = $day2;
         $this->englishName = 'Sandhill Crane Moon';
         $this->myaamiaName = 'cecaahkwa kiilhswa';
-      } else if ($dayOfLunarYear <= 118) {
+      } else if ($dayOfLunarYear <= ($day2 * 2) + ($day1 * 2)) {
         $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Whippoorwill Moon';
         $this->myaamiaName = 'wiihkoowia kiilhswa';
-      } else if ($dayOfLunarYear <= 148) {
+      } else if ($dayOfLunarYear <= ($day2 * 3) + ($day1 * 2)) {
         $this->numOfDaysInMonth = $day2;
         $this->englishName = 'Mid-Summer Moon';
         $this->myaamiaName = 'paaphsaahka niipinwiki';
-      } else if ($dayOfLunarYear <= 177) { 
+      } else if ($dayOfLunarYear <= ($day2 * 3) + ($day1 * 3)) { 
         $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Green Corn Moon';
         $this->myaamiaName = 'kiišiinkwia kiilhswa';
-      } else if ($dayOfLunarYear <= 207) {
+      } else if ($dayOfLunarYear <= ($day2 * 4) + ($day1 * 3)) {
         $this->numOfDaysInMonth = $day2;
         $this->englishName = 'Elk Moon';
         $this->myaamiaName = 'mihšiiwia kiilhswa';
-      } else if ($dayOfLunarYear <= 236) {
+      } else if ($dayOfLunarYear <= ($day2 * 4) + ($day1 * 4)) {
         $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Grass Burning Moon';
         $this->myaamiaName = 'šaašaakayolia kiilhswa';
-      } else if ($dayOfLunarYear <= 266) {
+      } else if ($dayOfLunarYear <= ($day2 * 5) + ($day1 * 4)) {
         $this->numOfDaysInMonth = $day2;
         $this->englishName = 'Smokey Burning Moon';
         $this->myaamiaName = 'kiiyolia kiilhswa';
-      } else if ($dayOfLunarYear <= 295) {
+      } else if ($dayOfLunarYear <= ($day2 * 5) + ($day1 * 5)) {
         $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Young Buck Moon';
         $this->myaamiaName = 'ayaapeensa kiilhswa';
-      } else if ($dayOfLunarYear <= 325) {
+      } else if ($dayOfLunarYear <= ($day2 * 6) + ($day1 * 5)) {
         $this->numOfDaysInMonth = $day2;
         $this->englishName = 'Buck Moon';
         $this->myaamiaName = 'ayaapia kiilhswa';
-      } else if ($dayOfLunarYear <= 354) {
+      } else if ($dayOfLunarYear <= ($day2 * 6) + ($day1 * 6)) {
         $this->numOfDaysInMonth = $day1;
         $this->englishName = 'Bear Moon';
         $this->myaamiaName = 'mahkwa kiilhswa';
       }
     }
 
-    public function lunar_day_of_month($dayOfLunarYear) {
+    public function lunar_day_of_month($dayOfLunarYear, $daysInFirstMonth, $isExtraMoon) {
+      if ($isExtraMoon) {
+	$day1 = $daysInFirstMonth;
+	$day2 = ($daysInFirstMonth == 29 ? 30 : 29);
+      } else {
+	$day1 = ($daysInFirstMonth == 29 ? 30 : 29);
+	$day2 = $daysInFirstMonth;
+      }
       if ($dayOfLunarYear <= 0) {
-        return 29 + $dayOfLunarYear;
-      } elseif ($dayOfLunarYear <= 30) {
+        return ($daysInFirstMonth + $dayOfLunarYear);
+      } elseif ($dayOfLunarYear <= $day2) {
         return $dayOfLunarYear;
-      } else if ($dayOfLunarYear <= 59) {
-        return $dayOfLunarYear - 30;
-      } else if ($dayOfLunarYear <= 89) {
-        return $dayOfLunarYear - 59;
-      } else if ($dayOfLunarYear <= 118) {
-        return $dayOfLunarYear - 89;
-      } else if ($dayOfLunarYear <= 148) {
-        return $dayOfLunarYear - 118;
-      } else if ($dayOfLunarYear <= 177) {
-        return $dayOfLunarYear - 148;
-      } else if ($dayOfLunarYear <= 207) {
-        return $dayOfLunarYear - 177;
-      } else if ($dayOfLunarYear <= 236) {
-        return $dayOfLunarYear - 207;
-      } else if ($dayOfLunarYear <= 266) {
-        return $dayOfLunarYear - 236;
-      } else if ($dayOfLunarYear <= 295) {
-        return $dayOfLunarYear - 266;
-      } else if ($dayOfLunarYear <= 325) {
-        return $dayOfLunarYear - 295;
-      } else if ($dayOfLunarYear <= 354) {
-        return $dayOfLunarYear - 325;
+      } else if ($dayOfLunarYear <= $day2 + $day1) {
+        return ($dayOfLunarYear - ($day2));
+      } else if ($dayOfLunarYear <= ($day2 * 2) + $day1) {
+        return ($dayOfLunarYear - (($day2) + $day1));
+      } else if ($dayOfLunarYear <= ($day2 * 2) + ($day1 * 2)) {
+        return ($dayOfLunarYear - (($day2 * 2) + ($day1)));
+      } else if ($dayOfLunarYear <= ($day2 * 3) + ($day1 * 2)) {
+        return ($dayOfLunarYear - (($day2 * 2) + ($day1 * 2)));
+      } else if ($dayOfLunarYear <= ($day2 * 3) + ($day1 * 3)) {
+        return ($dayOfLunarYear - (($day2 * 3) + ($day1 * 2)));
+      } else if ($dayOfLunarYear <= ($day2 * 4) + ($day1 * 3)) {
+        return ($dayOfLunarYear - (($day2 * 3) + ($day1 * 3)));
+      } else if ($dayOfLunarYear <= ($day2 * 4) + ($day1 * 4)) {
+        return ($dayOfLunarYear - (($day2 * 4) + ($day1 * 3)));
+      } else if ($dayOfLunarYear <= ($day2 * 5) + ($day1 * 4)) {
+        return ($dayOfLunarYear - (($day2 * 4) + ($day1 * 4)));
+      } else if ($dayOfLunarYear <= ($day2 * 5) + ($day1 * 5)) {
+        return ($dayOfLunarYear - (($day2 * 5) + ($day1 * 4)));
+      } else if ($dayOfLunarYear <= ($day2 * 6) + ($day1 * 5)) {
+        return ($dayOfLunarYear - (($day2 * 5) + ($day1 * 5)));
+      } else if ($dayOfLunarYear <= ($day2 * 6) + ($day1 * 6)) {
+        return ($dayOfLunarYear - (($day2 * 6) + ($day1 * 5)));
       }
     }
   }

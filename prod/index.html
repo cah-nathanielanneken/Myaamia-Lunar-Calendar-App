@@ -12,6 +12,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/CalendarCSS.css">
     <script src="../js/funcDef.js"></script>
     <script src="js/calendar.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <!--Bootstrap Navbar-->
@@ -31,7 +32,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav pull-right">
                     <li>
-                        <a href="#"><img src="../res/images/search_white.png" class="icon-top"> Search</a>
+                        <a href="http://myaamiacenter.org/research/lunar-calendar-research/"><img src="../res/images/search_white.png" class="icon-top"> Research</a>
                     </li>
                     <li>
                         <a href="#"><img src="../res/images/browse_white.png" class="icon-top"> Browse</a>
@@ -40,11 +41,11 @@
                         <a href="#"><img src="../res/images/feedback_white.png" class="icon-top"> Feedback</a>
                     </li>
                 </ul>
+		<div class="nav-ribbon"></div>
             </div>
         </div>
     </div>
 <!--Ribbon artwork-->
-    <div class="nav-ribbon"></div>
     <div class="side-ribbon"></div>
 
     <br><br><br><br><br>
@@ -54,7 +55,7 @@
         <div class="row">
             <div class="col-md-offset-2 col-sm-offset-2 col-md-6 col-sm-6">
                 <h1>Welcome To The Myaamia Calendar!</h1>
-                <h2 class="myaamia-yellow">Sub Heading (if needed)</h2>
+                <h2 id="subHeading" class="myaamia-yellow"></h2>
             </div>
         </div>
 	<input type="hidden" id="firstDayOfYear">

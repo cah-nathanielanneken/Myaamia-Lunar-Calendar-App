@@ -32,7 +32,8 @@ $(document).ready(function() {
 	});
 
 	function publishLink() {
-		var data = {"year":"2017", "data":calendarData};
+		var year = "" + parseInt(calendarData[1].daysInMonth[1].gregorianDate);
+		var data = {"year": year, "data":calendarData};
 		$.ajax({
 			method:"POST",
 			url: "prod/getProdData.php",
