@@ -1,4 +1,10 @@
 <?php
+  /*
+     Filename: LunarMonth.php
+     Created: 04/29/17
+     Purpose: PHP Script to create an object oriented LunarMonth
+  */
+
   include('LunarDay.php');
   class LunarMonth {
     public $myaamiaName;
@@ -8,13 +14,17 @@
     public $removalDays;
 
     function __construct($firstDayOfYear, $curDate, $isExtraMoon, $daysInFirstMonth, $removalDays) {
+      // Calculate the difference in days between the current date and the first day of the lunar year
       $dayDiff = ceil((strtotime($curDate) - strtotime($firstDayOfYear))/(60*60*24));
+      // Calculate the current day of Lunar Year
       $dayOfLunarYear = $this->get_day_of_lunar_year($dayDiff, $removalDays, $firstDayOfYear);
       $this->set_month_info($dayOfLunarYear, $isExtraMoon, $removalDays, $daysInFirstMonth);
+      // Create and add all lunar days to lunar month
       $this->daysInMonth = $this->create_days_for_month($dayOfLunarYear,$curDate, $removalDays, $isExtraMoon, $daysInFirstMonth);
     }
   
     public function get_day_of_lunar_year($dayDiff, $removalDays, $firstDayOfYear) {
+      // Calculate the day of the current lunar year
       $daySub = 0;
       foreach ($removalDays as &$removalDay) {
         $tempDayDiff = ceil((strtotime($removalDay) - strtotime($firstDayOfYear))/(60*60*24)); 
@@ -28,6 +38,7 @@
     }
 
     public function create_days_for_month($dayOfLunarYear,$curDate, $removalDays, $isExtraMoon, $daysInFirstMonth) {
+      // Create all lunar days for lunar month
       $days = array();
       if ($dayOfLunarYear == -1) {
         return $days;

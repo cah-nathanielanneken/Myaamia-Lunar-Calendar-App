@@ -1,4 +1,10 @@
 <?php
+  /*
+     Filename: LunarDay.php
+     Created: 04/29/17
+     Purpose: To create an object oriented representation of a LunarDay, given the current day of the lunar calendar year and the day of this month
+  */
+
   include '../moonPhase/php-moon-phase/Solaris/MoonPhase.php';
 
   class LunarDay {
@@ -10,16 +16,19 @@
     public $moonPhaseName;
 
     function __construct($curDate, $dayOfMonth) {
+      // Set basic Lunar Day attributes
       $this->myaamiaName = $this->convert_day($curDate);
       $d = date_parse_from_format('Y-m-d', $curDate);
       $this->gregorianDate = $curDate;
       $this->englishName = date('l', strtotime($curDate));
       $this->dayOfLunarMonth = $dayOfMonth;
+      // Call thirdparty software Solaris to get current moon phase information
       $this->moonPhase = (new Solaris\MoonPhase(strtotime($curDate)))->phase();
       $this->moonPhaseName = (new Solaris\MoonPhase(strtotime($curDate)))->phase_name(); 
     }
 
     public function convert_day($date) {
+      // Map gregorian day names to Myaamia day names
       $day = '';
       $dayName = date('l', strtotime($date));
       switch ($dayName) {

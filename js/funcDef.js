@@ -4,12 +4,46 @@ var summaryArray = [];
 var gregDateArray = [];
 var descArray = [];
 var monthIndex;
+var shortNames = ["eel.", "nko.", "nii.", "nih.", "nii.", "yaa.", "kaa."];
+var longNames = ["eelaamini-kiišikahki", "nkotakone", "niisšakone", "nihsokone", "niiyakone", "yaalanokone", "kaakaathsokone"];
+
+// Function for toggling between short and long Myaamia day names
+function shortenNames() {
+	if ($(window).width() < 645) {
+		var i = 0;
+		$("#dayNames").children().each(function() {
+			$(this).html(shortNames[i++]);
+		});
+	} else {
+		var i = 0;
+		$("#dayNames").children().each(function() {
+			$(this).html(longNames[i++]);
+		});
+	}
+}
+
+// Function for toggling date colors for mobile view
+function colorMobile() {
+	$("td").each(function() {
+		if ($(this).children(".mobile-event").length > 0) {
+			$(this).children(".miami-label").addClass("white");
+		}
+	});
+
+}
+
+// Trigger name shorter method if window is resized
+$(window).resize(function() {
+	shortenNames();
+});
 
 function init() {
+	// Get calendar data from Google Calendar
 	var x;
     gapi.client.setApiKey('AIzaSyBgO3m5gD5bahtn4LlULE9VnL3q6sKk7Kg');
-	var request = gapi.client.request({"path":"https://www.googleapis.com/calendar/v3/calendars/miamioh.edu_8lcvil6egdbsbjrggjuvrgsft4%40group.calendar.google.com/events?timeMin="+ $("#firstDayOfYear").val() +"T00%3A00%3A00%2B00%3A00", "method":"GET"});     //var request = gapi.client.request({"path":"calendars"});
+	var request = gapi.client.request({"path":"https://www.googleapis.com/calendar/v3/calendars/miamioh.edu_8lcvil6egdbsbjrggjuvrgsft4%40group.calendar.google.com/events?timeMin="+ $("#firstDayOfYear").val() +"T00%3A00%3A00%2B00%3A00", "method":"GET"});    
     request.then(function(response) {
+	// On success, save data, and parse description data from Google
 	eventData = (JSON.stringify(response.result.items));
 	eventData = JSON.parse(eventData);
 	for (var i = 0; i < eventData.length; i++) {
@@ -52,6 +86,8 @@ function init() {
     });
 }
 
+// Calculates the first day of a given moon phase by checking for the midnight whose
+// moon size is the closest to the value of the perfect moon phase
 function getFirstDayOfPhase(dayArr, perfPhase) {
 	var day = dayArr[0], moonSize = parseFloat(dayArr[0].attributes['data-moon-phase'].value);
 	for (var i = 1; i < dayArr.length; i++) {
@@ -64,15 +100,17 @@ function getFirstDayOfPhase(dayArr, perfPhase) {
 	return day;
 }
 
+// UI display logic for creating the calendar on the DOM
 function generateCalendar(monthIndex) {
-	
+	shortenNames();	
 	var eventDescription = "";
-	var dateMatch = -1, id = "";
+	var dateMatch = -1, id = "", eventIdCount = 0;
 	
 	var month = calendarData[monthIndex];
 	var cal = "<tr id='calWeek-0'>";
 	var daysOfWeek = ['eelaamini-kiišikahki','nkotakone','niišakone','nihsokone','niiyakone','yaalanokone','kaakaathsokone'];
-	var i;
+	var i, y = 0;
+	// Iterate over blank days until first day of lunar month is found
 	for (i = 0; i < 7; i++) {
 		if (month.daysInMonth[1].myaamiaName != daysOfWeek[i]) {
 			cal += "<td><div class='miami-label'></div><div class='gregDate'></div></td>";
@@ -81,16 +119,20 @@ function generateCalendar(monthIndex) {
 		}
 	}
 	
+	// Check if extra calendar row should be printed for extra day
 	var printExtraWeek =  ((i == 6  && parseInt(month.numOfDaysInMonth) == 30) ? true : false);
 
+	// Iterate over all weeks
 	var dateIndex = 1;
 	for (week = 1; (week < 6) || (printExtraWeek && week < 7); week++) {
 		for (; i < 7; i++) {
 			dateMatch = [];
 			var eventDescription = "", eventDetails = "";
+			// Check to ensure more days are in month
 			if (dateIndex > month.numOfDaysInMonth) {
 				cal += "<td><div class='miami-label'></div><div class='gregDate'></div></td>";
 			} else {
+				// Look for any Google Calendar data that matches the current date
 				var dateObj = new Date(month.daysInMonth[dateIndex].gregorianDate);
 				gregDate = (dateObj.getUTCMonth() + 1) + "/" + dateObj.getUTCDate();
 				for (var j = 0; j < gregDateArray.length; j++) {
@@ -115,6 +157,7 @@ function generateCalendar(monthIndex) {
 
 				id = "";
 
+				// Check to see if Google Calendar data exists for moon phases, if it does, manually override programatic calculations
 				if (eventDescription.toLowerCase() == "beginning of napale") {
 					id = "firstQ";
 				} else if (eventDescription.toLowerCase() == "beginning of waawiyiisita") {
@@ -123,27 +166,32 @@ function generateCalendar(monthIndex) {
 					id = "thirdQ";
 				}
 					
-			
-				cal += "<td id='" + id + "' data-moon-phase-name='" + month.daysInMonth[dateIndex].moonPhaseName +"' data-moon-phase="+ month.daysInMonth[dateIndex].moonPhase  +"><div class='miami-label'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div><div class='events'>";
+				var curDate = new Date(), extraClass = "";
+				if (dateObj.getMonth() == curDate.getMonth() && dateObj.getFullYear() == dateObj.getFullYear() && dateObj.getDate() + 1 == curDate.getDate()) {
+					extraClass = "current-day";
+				}			
 
-				
-				//"<div class='description'><b>"+ eventDescription + "</b><br>" + eventDetails  +"</div><div class='event-name'>"+ eventDescription;
+				// Add day to calendar
+				cal += "<td id='" + id + "' class='" + extraClass + "' data-moon-phase-name='" + month.daysInMonth[dateIndex].moonPhaseName +"' data-moon-phase="+ month.daysInMonth[dateIndex].moonPhase  +"><div class='miami-label'><div class='miami-label-inner'>"+month.daysInMonth[dateIndex].dayOfLunarMonth+"</div></div><div class='events'>";
 
+				// If day has more than one event in it, add Bootstrap popup
 				if (dateMatch.length > 1) {
 					cal += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'> <div class='modal-dialog' role='document'> <div class='modal-content'> <div class='modal-header'> <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <h4 class='modal-title' id='myModalLabel'>Events</h4> </div> <div class='modal-body'>";
 
+					// Add all events to popup
 					var x = 0;
 					while (x < dateMatch.length) {
-						cal += "<p class='text-primary'>" + summaryArray[dateMatch[x]] + "</p>";
+						cal += "<p class='text-primary' data-toggle='collapse' href='#eventId-" + eventIdCount + "' aria-expanded='false' aria-controls='eventId-" + x + "'>" + summaryArray[dateMatch[x]] + "</p><div class='collapse' id='eventId-" + eventIdCount + "'>" + descArray[dateMatch[x]] + "</div>";
 						x++;
+						eventIdCount++;
 					}
 
 					cal += "</div><div class='modal-footer'> <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button> </div> </div> </div> </div>";
 	
 					cal += "<div type='button' class='event-name second' data-toggle='modal' data-target='#myModal"+i+"'>" + (dateMatch.length - 1) + " more... </div>";
-					//cal += "</div><div class='event-name second'>" + (dateMatch.length - 1) + " more...";
 				}
 
+				// Add proper hover icon for desktop view to view event details
 				if (week == 5) {
 					if (i == 5 || i == 6) {
 						cal += "<div class='description descriptionUpLeft'>";
@@ -156,8 +204,28 @@ function generateCalendar(monthIndex) {
 					cal += "<div class='description'>";
 				}
 	
-				cal += "<b><div class='descriptionHeader'>"+ eventDescription + "</b><br></div>" + eventDetails  +"</div><div class='event-name'>"+ eventDescription +"</div></div></div><div class=gregDate>" + gregDate + "</div></td>";
-				//cal += "</div></div><div class='gregDate'>" + gregDate + "</div></td>";
+				cal += "<b><div class='descriptionHeader'>"+ eventDescription + "</b><br></div>" + eventDetails  +"</div><div class='event-name'>"+ eventDescription +"</div></div></div>";
+
+				// If day has an event in it, add mobile popup for mobile view
+				if (dateMatch.length > 0) {
+					cal += "<div class='mobile-event'><div class='modal fade' id='myModal"+y+"-mobile' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'> <div class='modal-dialog' role='document'> <div class='modal-content'> <div class='modal-header'> <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button> <h4 class='modal-title' id='myModalLabel'>Events</h4> </div> <div class='modal-body'>";
+			
+					// Add all events to popup
+					var x = 0;	
+					while (x < dateMatch.length) {
+						cal += "<p class='text-primary' data-toggle='collapse' href='#eventId-" + eventIdCount + "-mobile' aria-expanded='false' aria-controls='eventId-" + eventIdCount + "-mobile'>" + summaryArray[dateMatch[x]] + "</p><div class='collapse' id='eventId-" + eventIdCount + "-mobile'>" + descArray[dateMatch[x]] + "</div>";
+						x++;
+						eventIdCount++;
+					}
+
+					cal += "</div><div class='modal-footer'> <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button> </div> </div> </div> </div>";
+
+					cal += "<div type='button' class='event-name second' data-toggle='modal' data-target='#myModal"+y+"-mobile'><div class='mobile-circle'></div></div></div>";
+					y++;
+				}
+
+				// Add gregorian day to calendar day
+				cal += "<div class=gregDate>" + gregDate + "</div></td>";
 				dateIndex++;
 			}
 		}
@@ -168,6 +236,7 @@ function generateCalendar(monthIndex) {
 		i = 0;
 	}
 
+	// Insert calendar to DOM
 	$("#calendar h2").html(month.myaamiaName);
 	$("#calendar h3").html(month.englishName);
 	$("#monthNav").html("");
@@ -186,6 +255,7 @@ function generateCalendar(monthIndex) {
 	}  
 	$("#calendar").append(cal);
 
+	// Insert moon phase icons based upon either programatic calculations or Google Calendar override
 	var fullMoon = $("td[data-moon-phase-name='Full Moon']"), firstQuarter = $("td[data-moon-phase-name='First Quarter']"), thirdQuarter = $("td[data-moon-phase-name='Third Quarter']");
 
 	var day = $("#secondQ")[0] === undefined ? getFirstDayOfPhase(fullMoon, 0.5) : $("#secondQ")[0];	
@@ -197,7 +267,8 @@ function generateCalendar(monthIndex) {
 	day = $("#thirdQ")[0] === undefined ? getFirstDayOfPhase(thirdQuarter, 0.75) : $("#thirdQ")[0];
 	$("<div class='moon-pic'><div class='moon-wrapper'><img src='res/images/napale-neepiki.png'></div></div>").insertBefore($(day).children().last());
 
-
+	// Color mobile dates white if they have one event in them
+	colorMobile();
 
 	//This allows the popup div to appear/disappear
 
@@ -209,7 +280,11 @@ function generateCalendar(monthIndex) {
 	  } else {
 	    $(this).siblings('.description').mouseout(function() { $(this).hide(); });
 	  }
-	});	
+	});
+
+	$(document).on('click touchstart', function() {
+		$('.description').hide();
+	});
 
 	$('#myModal').on('shown.bs.modal', function () {
   		$('#myInput').focus()

@@ -9,10 +9,20 @@ body {
 table {
 	text-align:center;
 	table-layout: fixed;
+	width: 100%;
 }
 
 input {
 	color: black;
+}
+
+.h3, h3 {
+	font-size: 20px;
+}
+
+td > h2 {
+	font-size: 30px;
+	font-weight: bold;
 }
 
 #calendar > tbody > tr:nth-child(2) {
@@ -41,6 +51,7 @@ input {
 #calendar > tbody > tr  > td > div.miami-label {
 	height: 50px;
 	padding-right: 5px;
+	z-index: 5;
 }
 
 .moon-wrapper {
@@ -58,6 +69,8 @@ input {
 
 #dayNames > td {
 	height: 100px;
+	word-break: break-word;
+	font-size: 12px;
 }
 
 tr {
@@ -122,6 +135,10 @@ div.full > div.moon-wrapper >  img {
     top:-50px;
 }
 
+.description:active {
+    display:block;
+}
+
 .descriptionLeft {
     left: -150px;
 }
@@ -164,10 +181,36 @@ div.full > div.moon-wrapper >  img {
 
 .event-name.second {
     bottom: 0px;
+    cursor: pointer;
 }
 
 #prev, #next {
     margin-bottom: 10px;
     color: white;
     background-color: #D31014;
+}
+
+.text-primary {
+    cursor: pointer;
+}
+
+.current-day {
+    background-color: rgba(255, 255, 0, 0.3);
+}
+
+.modal-dialog {
+    z-index: 3000;
+}
+
+.mobile-event {
+    display: none;
+    position: relative;
+}
+
+.modal {
+	font-size: 1.5em;
+}
+
+.modal-title {
+	font-size: 1.8em;
 }

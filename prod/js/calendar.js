@@ -16,6 +16,7 @@ $(document).ready(function() {
 		},
 		error: function(status) {
 			console.log("Failure");
+			console.log(status);
 		}
 	});
 });
