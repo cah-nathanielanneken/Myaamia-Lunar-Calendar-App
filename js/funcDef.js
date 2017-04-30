@@ -282,10 +282,12 @@ function generateCalendar(monthIndex) {
 	  }
 	});
 
+	// Allows for mouse-over or clicking of events to display data
 	$(document).on('click touchstart', function() {
 		$('.description').hide();
 	});
 
+	// Function to bring up pane for multiple events
 	$('#myModal').on('shown.bs.modal', function () {
   		$('#myInput').focus()
 	});

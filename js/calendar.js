@@ -1,3 +1,4 @@
+//Js file to save new calendar and publish to production
 $(document).ready(function() {
 			
 	$("#cal").hide();
@@ -18,7 +19,8 @@ $(document).ready(function() {
 				console.log(status);
 			}
 		});
-		
+	
+		// If "publish" is clicked, then confirm button appears, if yes, calls publish function	
 		$("#publishLink").click(function(event) {
 			$.confirm({
 				title: 'Warning!',
@@ -31,6 +33,7 @@ $(document).ready(function() {
 		});		
 	});
 
+	// publishes calendar by ajax call to php file
 	function publishLink() {
 		var year = "" + parseInt(calendarData[1].daysInMonth[1].gregorianDate);
 		var data = {"year": year, "data":calendarData};
