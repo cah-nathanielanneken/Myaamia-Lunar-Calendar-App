@@ -137,9 +137,14 @@ function generateCalendar(monthIndex) {
 				gregDate = (dateObj.getUTCMonth() + 1) + "/" + dateObj.getUTCDate();
 				for (var j = 0; j < gregDateArray.length; j++) {
 					var month1, day, year;
-					month1 = dateObj.getMonth() + 1;
-					day = dateObj.getDate() + 1;
-					year = dateObj.getFullYear();
+					var tmpDateObj = new Date();
+					tmpDateObj.setYear(dateObj.getFullYear());
+					tmpDateObj.setMonth(dateObj.getMonth());
+					tmpDateObj.setDate(dateObj.getDate() + 1);
+
+					month1 = tmpDateObj.getMonth() + 1;
+					day = tmpDateObj.getDate();
+					year = tmpDateObj.getFullYear();
 					if (day < 10)
 						day = "0" + day
 					if (month1 < 10)
@@ -167,7 +172,8 @@ function generateCalendar(monthIndex) {
 				}
 					
 				var curDate = new Date(), extraClass = "";
-				if (dateObj.getMonth() == curDate.getMonth() && dateObj.getFullYear() == dateObj.getFullYear() && dateObj.getDate() + 1 == curDate.getDate()) {
+				dateObj.setDate(dateObj.getDate() + 1);
+				if (dateObj.getMonth() == curDate.getMonth() && dateObj.getFullYear() == dateObj.getFullYear() && dateObj.getDate() == curDate.getDate()) {
 					extraClass = "current-day";
 				}			
 
@@ -240,7 +246,7 @@ function generateCalendar(monthIndex) {
 	$("#calendar h2").html(month.myaamiaName);
 	$("#calendar h3").html(month.englishName);
 	$("#monthNav").html("");
-	for (i = 0; i < 6; i++) {
+	for (i = 0; i < 7; i++) {
 		$("#calWeek-" + i).remove();
 	}
 	$("#monthNav").append("<a href='#' id='prev' class='btn btn-default'  onclick='generateCalendar("+(monthIndex - 1)+")'><< Previous Month</a>");
