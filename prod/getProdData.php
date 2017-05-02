@@ -47,13 +47,34 @@
 	// If no year parameter supplied, assume current calendar year
 	if (!array_key_exists('year', $_GET)) {
 		$_GET['year'] = date('Y');
+		$_GET['year'] = $_GET['year'] + 1;	
 	}
 
 	// Get current year data from MongoDB
 	$query = new MongoDB\Driver\Query(array('year'=>$_GET['year']));
 	$result = $mongo->executeQuery('db.miaamia-calendar',$query);
-	$result = $result->toArray()[0];
-	$result->data = (array) $result->data;
+	$result = $result->toArray();
+
+	if (count($result) > 0) {
+		$result = $result[0];
+		$result->data = (array) $result->data;
+		$result->data[1]->daysInMonth = (array) $result->data[1]->daysInMonth;
+	}
+
+	if (count($result) == 0 || strtotime($result->data[1]->daysInMonth[1]->gregorianDate) > time()) {
+		$_GET['year'] = $_GET['year'] - 1;
+		$query = new MongoDB\Driver\Query(array('year'=>"".$_GET['year']));
+		$result = $mongo->executeQuery('db.miaamia-calendar',$query);
+		$result = $result->toArray();
+
+		if (count($result) == 0) {
+			echo json_encode(array('status'=>'FAIL', 'msg'=>'No data exists for year'));
+			exit();
+		}
+
+		$result = $result[0];
+		$result->data = (array) $result->data;
+	}
 
 	// Set current month index to current month if applicable
 	$result->data['curMonthIndex'] = 1;

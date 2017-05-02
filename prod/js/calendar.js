@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(window).on('load', function() {
 	// Gets calendar data from php file to start page load
  	// Gets current date and moves calendar to current date		
 	console.log("Attempting to furnish data...");
@@ -9,6 +9,7 @@ $(document).ready(function() {
 		success: function(data) {
 			if (data.status === undefined || data.status != "OK") {
 				$("#cal").html("Something went wrong...");
+				console.log(data);
 			} else {
 				console.log("Success");
 				calendarData = data.result.data;

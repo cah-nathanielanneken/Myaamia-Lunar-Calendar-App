@@ -1,6 +1,5 @@
 //Js file to save new calendar and publish to production
-$(document).ready(function() {
-			
+$(window).on('load', function() {		
 	$("#cal").hide();
 	$("form").submit(function(event) {
 		event.preventDefault();

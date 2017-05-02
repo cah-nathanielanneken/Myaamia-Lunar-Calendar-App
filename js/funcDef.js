@@ -58,21 +58,47 @@ function init() {
 			gregDateArray.push(0);
 		else
 			if (eventData[i].start.date !== undefined) {
-				gregDateArray.push({"start":eventData[i].start.date, "end":eventData[i].end.date});
-			} else {
-				var tmp = new Date(eventData[i].start.dateTime);
-				var year = tmp.getFullYear();
-				var month = tmp.getMonth() + 1;
-				var day = tmp.getDate();
-				if (month < 10) {
-					month = "0" + month;
+				var tmp = new Date(eventData[i].end.date), tmp2 = new Date(eventData[i].start.date);
+				var str = (tmp.getFullYear()) + "-" + (tmp.getMonth() + 1 < 10 ? "0" + (tmp.getMonth() + 1) : (tmp.getMonth() + 1)) + "-" + ((tmp.getDate() < 10 ? "0" + (tmp.getDate()) : (tmp.getDate())));
+				
+				var str2 = (tmp2.getFullYear()) + "-" + (tmp2.getMonth() + 1 < 10 ? "0" + (tmp2.getMonth() + 1) : (tmp2.getMonth() + 1)) + "-" + ((tmp2.getDate() + 1 < 10 ? "0" + (tmp2.getDate() + 1) : (tmp2.getDate() + 1)));
+				var incr1 = new Date(eventData[i].start.date), incr2 = new Date(eventData[i].end.date);
+				incr1.setDate(incr1.getDate() + 1);
+				
+				var eventDetails = "<b>Description:</b> " + descArray[i] + "<br><br><b>Time:</b> ";
+				if (incr1.getFullYear() == incr2.getFullYear() && incr1.getMonth() == incr2.getMonth() && incr1.getDate() == incr2.getDate()) {
+					eventDetails += incr1.toDateString();
+				} else {
+					eventDetails += incr1.toDateString() + "-" + incr2.toDateString();
 				}
-				if (day < 10) {
-					day = "0" + day;
+				
+				gregDateArray.push({"start":str2, "end":str, "printTime":eventDetails});
+			} else {
+				var tmp = new Date(eventData[i].start.dateTime), tmp2 = new Date(eventData[i].end.dateTime);
+				var year1 = tmp.getFullYear(), year2 = tmp2.getFullYear();
+				var month1 = tmp.getMonth() + 1, month2 = tmp2.getMonth() + 1;
+				var day1 = tmp.getDate(), day2 = tmp2.getDate();
+				if (month1 < 10) {
+					month1 = "0" + month1;
+				}
+				if (month2 < 10) {
+					month2 = "0" + month2;
+				}
+				if (day1 < 10) {
+					day1 = "0" + day1;
+				}
+				if (day2 < 10) {
+					day2 = "0" + day2;
 				}
 					
-				var str = year + "-" + month + "-" + day;
-				gregDateArray.push({"start":str, "end":eventData[i].end.dateTime});
+				var str = year1 + "-" + month1 + "-" + day1, str2 = year2 + "-" + month2 + "-" + day2;
+
+				var incr1 = new Date(eventData[i].start.dateTime), incr2 = new Date(eventData[i].end.dateTime);
+				incr1.setDate(incr1.getDate());
+				var eventDetails = "<b>Description:</b> " + descArray[i] + "<br><br><b>Time:</b> " + incr1.toDateString() + " " + incr1.toLocaleTimeString() + "-" + incr2.toDateString() + " " + incr2.toLocaleTimeString();
+	
+				
+				gregDateArray.push({"start":str, "end":str2, "printTime":eventDetails});
 			}
 	}
 	if (monthIndex === undefined) {
@@ -137,7 +163,7 @@ function generateCalendar(monthIndex) {
 				gregDate = (dateObj.getUTCMonth() + 1) + "/" + dateObj.getUTCDate();
 				for (var j = 0; j < gregDateArray.length; j++) {
 					var month1, day, year;
-					var tmpDateObj = new Date();
+					var tmpDateObj = new Date(dateObj);
 					tmpDateObj.setYear(dateObj.getFullYear());
 					tmpDateObj.setMonth(dateObj.getMonth());
 					tmpDateObj.setDate(dateObj.getDate() + 1);
@@ -145,19 +171,18 @@ function generateCalendar(monthIndex) {
 					month1 = tmpDateObj.getMonth() + 1;
 					day = tmpDateObj.getDate();
 					year = tmpDateObj.getFullYear();
-					if (day < 10)
-						day = "0" + day
-					if (month1 < 10)
-						month1 = "0" + month1
 					var convertedDate = year + "-" + month1 + "-" + day;
 					var dateObjS = new Date(gregDateArray[j].start);
 					var dateObjE = new Date(gregDateArray[j].end);
-					if (gregDateArray[j].start == convertedDate)
+					dateObjS.setDate(dateObjS.getDate() + 1);
+					dateObjE.setDate(dateObjE.getDate() + 1);
+					if (dateObjS.getFullYear() <= year && dateObjE.getFullYear() >= year && dateObjS.getMonth() + 1 <= month1 && dateObjE.getMonth() + 1 >= month1 && dateObjS.getDate() <= day && dateObjE.getDate() >= day) {
 						dateMatch.push(j);
+					}
 				}
 				if (dateMatch.length >= 1) {
 					eventDescription = summaryArray[dateMatch[0]];
-					eventDetails = descArray[dateMatch[0]];
+					eventDetails = gregDateArray[dateMatch[0]].printTime;
 				} 
 
 				id = "";
@@ -187,7 +212,9 @@ function generateCalendar(monthIndex) {
 					// Add all events to popup
 					var x = 0;
 					while (x < dateMatch.length) {
-						cal += "<p class='text-primary' data-toggle='collapse' href='#eventId-" + eventIdCount + "' aria-expanded='false' aria-controls='eventId-" + x + "'>" + summaryArray[dateMatch[x]] + "</p><div class='collapse' id='eventId-" + eventIdCount + "'>" + descArray[dateMatch[x]] + "</div>";
+						eventDetails = gregDateArray[dateMatch[x]].printTime;
+	
+						cal += "<p class='text-primary' data-toggle='collapse' href='#eventId-" + eventIdCount + "' aria-expanded='false' aria-controls='eventId-" + x + "'>" + summaryArray[dateMatch[x]] + "</p><div class='collapse' id='eventId-" + eventIdCount + "'>" + eventDetails + "</div>";
 						x++;
 						eventIdCount++;
 					}
@@ -219,7 +246,9 @@ function generateCalendar(monthIndex) {
 					// Add all events to popup
 					var x = 0;	
 					while (x < dateMatch.length) {
-						cal += "<p class='text-primary' data-toggle='collapse' href='#eventId-" + eventIdCount + "-mobile' aria-expanded='false' aria-controls='eventId-" + eventIdCount + "-mobile'>" + summaryArray[dateMatch[x]] + "</p><div class='collapse' id='eventId-" + eventIdCount + "-mobile'>" + descArray[dateMatch[x]] + "</div>";
+						eventDetails = gregDateArray[dateMatch[x]].printTime;
+
+						cal += "<p class='text-primary' data-toggle='collapse' href='#eventId-" + eventIdCount + "-mobile' aria-expanded='false' aria-controls='eventId-" + eventIdCount + "-mobile'>" + summaryArray[dateMatch[x]] + "</p><div class='collapse' id='eventId-" + eventIdCount + "-mobile'>" + eventDetails + "</div>";
 						x++;
 						eventIdCount++;
 					}
@@ -265,13 +294,13 @@ function generateCalendar(monthIndex) {
 	var fullMoon = $("td[data-moon-phase-name='Full Moon']"), firstQuarter = $("td[data-moon-phase-name='First Quarter']"), thirdQuarter = $("td[data-moon-phase-name='Third Quarter']");
 
 	var day = $("#secondQ")[0] === undefined ? getFirstDayOfPhase(fullMoon, 0.5) : $("#secondQ")[0];	
-	$("<div class='moon-pic full'><div class='moon-wrapper'><img src='res/images/waawiyiisita.png'></div></div>").insertBefore($(day).children().last());
+	$("<div class='moon-pic full'><div class='moon-wrapper'><img src='res/images/waawiyiisita.png'><div class='wrap-moon'></div></div></div>").insertBefore($(day).children().last());
 	
 	day = $("#firstQ")[0] === undefined ? getFirstDayOfPhase(firstQuarter, 0.25) : $("#firstQ")[0];
-	$("<div class='moon-pic'><div class='moon-wrapper'><img src='res/images/napale.png'></div></div>").insertBefore($(day).children().last());
+	$("<div class='moon-pic'><div class='moon-wrapper'><img src='res/images/napale.png'><div class='wrap-moon'></div></div></div>").insertBefore($(day).children().last());
 
 	day = $("#thirdQ")[0] === undefined ? getFirstDayOfPhase(thirdQuarter, 0.75) : $("#thirdQ")[0];
-	$("<div class='moon-pic'><div class='moon-wrapper'><img src='res/images/napale-neepiki.png'></div></div>").insertBefore($(day).children().last());
+	$("<div class='moon-pic'><div class='moon-wrapper'><img src='res/images/napale-neepiki.png'><div class='wrap-moon'></div></div></div>").insertBefore($(day).children().last());
 
 	// Color mobile dates white if they have one event in them
 	colorMobile();
@@ -286,6 +315,12 @@ function generateCalendar(monthIndex) {
 	  } else {
 	    $(this).siblings('.description').mouseout(function() { $(this).hide(); });
 	  }
+	});
+
+	$('.wrap-moon').mouseover(function() {
+		$(this).parent().parent().siblings('.events').children('.description').show();
+	}).mouseout(function() {
+		$(this).parent().parent().siblings('.events').children('.description').hide();
 	});
 
 	// Allows for mouse-over or clicking of events to display data
